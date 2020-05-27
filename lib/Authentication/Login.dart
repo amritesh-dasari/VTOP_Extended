@@ -318,7 +318,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: RaisedButton(
                     color: Colors.white,
                     onPressed: (){
-                      signInWithGoogle().whenComplete(() => Navigator.pushReplacement(context, MaterialPageRoute(builder:  (context) => ExtendedHome())));
+                      Navigator.push(context, MaterialPageRoute(builder:  (context) => ExtendedHome()));
+                      // signInWithGoogle().whenComplete(() => Navigator.pushReplacement(context, MaterialPageRoute(builder:  (context) => ExtendedHome())));
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
