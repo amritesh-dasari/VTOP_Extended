@@ -220,7 +220,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.43, left: MediaQuery.of(context).size.width*0.05, right: MediaQuery.of(context).size.width*0.05),
+                  margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.455, left: MediaQuery.of(context).size.width*0.05, right: MediaQuery.of(context).size.width*0.05),
                   child: TextFormField(                    
                     controller: passwordController,
                     keyboardType: TextInputType.visiblePassword,
@@ -260,7 +260,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.52, left: MediaQuery.of(context).size.width*0.7),
+                  margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.57, left: MediaQuery.of(context).size.width*0.7),
                   child: RichText(
                     text: TextSpan(
                       recognizer: TapGestureRecognizer()..onTap = ()
