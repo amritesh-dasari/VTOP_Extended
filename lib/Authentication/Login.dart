@@ -350,7 +350,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 Center(
                   child: Container(
-                    margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.83,bottom: MediaQuery.of(context).size.height*0.13,left: MediaQuery.of(context).size.width*0.18, right: MediaQuery.of(context).size.width*0.18),
+                    margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.9,bottom: MediaQuery.of(context).size.height*0.05,left: MediaQuery.of(context).size.width*0.18, right: MediaQuery.of(context).size.width*0.18),
                     child: RichText(
                       text: TextSpan(
                         text: "Don't have an account ?",
