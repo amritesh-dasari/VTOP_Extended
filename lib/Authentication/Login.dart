@@ -284,7 +284,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Container(
                   height: MediaQuery.of(context).size.height*0.07,
                   width: MediaQuery.of(context).size.width*0.9,
-                  margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.575, left: MediaQuery.of(context).size.width*0.05, right: MediaQuery.of(context).size.width*0.05),
+                  margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.625, left: MediaQuery.of(context).size.width*0.05, right: MediaQuery.of(context).size.width*0.05),
                   child: RaisedButton(
                     color: Colors.pink,
                     onPressed: validateAndLogin,
@@ -299,7 +299,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.66, left: MediaQuery.of(context).size.width*0.48),
+                  margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.71, left: MediaQuery.of(context).size.width*0.48),
                   child: RichText(
                     text: TextSpan(
                         text: "OR ",
@@ -314,7 +314,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Container(
                   height: MediaQuery.of(context).size.height*0.07,
                   width: MediaQuery.of(context).size.width*0.9,
-                  margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.7, left: MediaQuery.of(context).size.width*0.05, right: MediaQuery.of(context).size.width*0.05),
+                  margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.75, left: MediaQuery.of(context).size.width*0.05, right: MediaQuery.of(context).size.width*0.05),
                   child: RaisedButton(
                     color: Colors.white,
                     onPressed: (){
