@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:vtop/Authentication/normAuth.dart';
 import 'package:vtop/UI/Signup.dart';
 import 'package:vtop/UI/forgotPass.dart';
 // import 'package:vtop/Authentication/Authentication.dart';
@@ -16,137 +17,15 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 
 }
-
+String _email = "";
+String _pass = "";
 class _LoginScreenState extends State<LoginScreen> {
-//
-//  @override
-// void initState()
-//  {
-//    super.initState();
-//    autoLogin();
-//  }
-  String _email = "";
-  String _pass = "";
-  final _formKey = GlobalKey<FormState>();
 
+
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = new TextEditingController();
   final TextEditingController passwordController = new TextEditingController();
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn googleSignIn = GoogleSignIn();
-
-  //implementing auto login
-  Future<bool> isUserLoggedIn() async {
-    var user = await _auth.currentUser();
-    return user != null;
-  }
-
-
-  //implementation of google sign in method
-
-  Future<String> signInWithGoogle() async {
-    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
-    final GoogleSignInAuthentication googleSignInAuthentication =
-    await googleSignInAccount.authentication;
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
-      accessToken: googleSignInAuthentication.accessToken,
-      idToken: googleSignInAuthentication.idToken,
-    );
-    final AuthResult authResult = await _auth.signInWithCredential(credential);
-    final FirebaseUser user = authResult.user;
-    String email = user.email;
-
-    assert(!user.isAnonymous);
-    assert(await user.getIdToken() != null);
-    final FirebaseUser currentUser = await _auth.currentUser();
-    assert(user.uid == currentUser.uid);
-//    user.sendEmailVerification();
-    return 'signInWithGoogle succeeded: $user, email $email';
-  }
-
-
-    FirebaseUser user;
-
-
-  bool validatAndSave()
-  {
-    if(_formKey.currentState.validate()){
-      _formKey.currentState.save();
-      return true;
-    }
-    return false;
-  }
-
-  autoLogin() async
-  {
-    var user = await _auth.currentUser();
-    if(_auth.currentUser() != null)
-      {
-        ExtendedHome();
-      }
-    else{
-      validateAndLogin();
-    }
-  }
-
-  validateAndLogin() async
-  {
-    if(validatAndSave()) {
-      isUserLoggedIn();
-      try {
-
-        FirebaseUser user;
-        user = (await _auth.signInWithEmailAndPassword(
-            email: _email, password: _pass)).user;
-
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ExtendedHome()));
-        print('Login successfull user id is  : ${user.uid}');
-      } catch (error) {
-        switch(error.code){
-          case "ERROR_USER_NOT_FOUND":  {
-            setState(() {
-              String errorMsg = "User not Registered";
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      content: Container(
-                        child: Text(errorMsg),
-                      ),
-                    );
-                  });
-            });
-          }
-          break;
-          case "ERROR_WRONG_PASSWORD":
-            {
-              setState(() {
-                String errorMsg = "Password doesn\'t match your email.";
-
-
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        content: Container(
-                          child: Text(errorMsg),
-                        ),
-                      );
-                    });
-              });
-            }
-            break;
-          default:
-            {
-              setState(() {
-                String errorMsg ="";
-              });
-            }
-        }
-      }
-    }
-
-    }
 
   @override
   Widget build(BuildContext context) {
@@ -287,7 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.625, left: MediaQuery.of(context).size.width*0.05, right: MediaQuery.of(context).size.width*0.05),
                   child: RaisedButton(
                     color: Colors.pink,
-                    onPressed: validateAndLogin,
+                    onPressed: LoginUser(_email, _pass),
                     child: Text(
                       "LOGIN",
                       style: TextStyle(
