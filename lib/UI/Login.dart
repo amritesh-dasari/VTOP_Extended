@@ -166,7 +166,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.625, left: MediaQuery.of(context).size.width*0.05, right: MediaQuery.of(context).size.width*0.05),
                   child: RaisedButton(
                     color: Colors.pink,
-                    onPressed: LoginUser(_email, _pass),
+                    onPressed: () {
+                      LoginUser(_email, _pass);
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ExtendedHome()));
+                    },
                     child: Text(
                       "LOGIN",
                       style: TextStyle(
