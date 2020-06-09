@@ -30,6 +30,7 @@ FirebaseUser user;
         String _pass;
                 user = (await _auth.signInWithEmailAndPassword(
                     email: _email, password: _pass)).user;
+
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ExtendedHome()));
         print('Login successfull user id is  : ${user.uid}');
       } catch (error) {
