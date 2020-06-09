@@ -18,13 +18,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-//
-//  @override
-// void initState()
-//  {
-//    super.initState();
-//    autoLogin();
-//  }
+
   String _email = "";
   String _pass = "";
   final _formKey = GlobalKey<FormState>();
@@ -35,36 +29,10 @@ class _LoginScreenState extends State<LoginScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn();
 
-  //implementing auto login
-  Future<bool> isUserLoggedIn() async {
-    var user = await _auth.currentUser();
-    return user != null;
-  }
+
 
 
   //implementation of google sign in method
-
-  Future<String> signInWithGoogle() async {
-    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
-    final GoogleSignInAuthentication googleSignInAuthentication =
-    await googleSignInAccount.authentication;
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
-      accessToken: googleSignInAuthentication.accessToken,
-      idToken: googleSignInAuthentication.idToken,
-    );
-    final AuthResult authResult = await _auth.signInWithCredential(credential);
-    final FirebaseUser user = authResult.user;
-    String email = user.email;
-
-    assert(!user.isAnonymous);
-    assert(await user.getIdToken() != null);
-    final FirebaseUser currentUser = await _auth.currentUser();
-    assert(user.uid == currentUser.uid);
-//    user.sendEmailVerification();
-    return 'signInWithGoogle succeeded: $user, email $email';
-  }
-
-
     FirebaseUser user;
 
 
