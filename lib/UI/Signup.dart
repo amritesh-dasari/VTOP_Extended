@@ -132,7 +132,7 @@ class _SignupScreenState extends State<SignupScreen> {
           color: Colors.black,
           image: DecorationImage(
             image: AssetImage('assets/images/Space.png'),
-            colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.37), BlendMode.darken),
+            colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.4), BlendMode.darken),
             fit: BoxFit.cover
           )
         ),
@@ -141,7 +141,7 @@ class _SignupScreenState extends State<SignupScreen> {
           child: Stack(
             children: <Widget>[
               Container(
-                margin: EdgeInsets.only(top:MediaQuery.of(context).size.height*0.05, left: MediaQuery.of(context).size.width*0.03),
+                margin: EdgeInsets.only(top:MediaQuery.of(context).size.height*0.04, left: MediaQuery.of(context).size.width*0.02),
                 child: IconButton(
                   icon: Icon(Icons.arrow_back, 
                     size: 30,
@@ -153,7 +153,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.15, left: MediaQuery.of(context).size.width*0.1),
+                margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.11, left: MediaQuery.of(context).size.width*0.06),
                 child: Text("SIGN UP",
                   style: TextStyle(
                     color: Colors.white,
@@ -163,7 +163,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.3, left: MediaQuery.of(context).size.width*0.05, right: MediaQuery.of(context).size.width*0.05),
+                margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.225, left: MediaQuery.of(context).size.width*0.05, right: MediaQuery.of(context).size.width*0.05),
                 child: TextFormField(
                   keyboardType: TextInputType.emailAddress,
                   controller: emailController,
@@ -208,7 +208,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.4, left: MediaQuery.of(context).size.width*0.05, right: MediaQuery.of(context).size.width*0.05),
+                margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.345, left: MediaQuery.of(context).size.width*0.05, right: MediaQuery.of(context).size.width*0.05),
                 child: TextFormField(
                   controller: passwordController,
                   keyboardType: TextInputType.visiblePassword,
@@ -247,7 +247,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.5, left: MediaQuery.of(context).size.width*0.05, right: MediaQuery.of(context).size.width*0.05),
+                margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.465, left: MediaQuery.of(context).size.width*0.05, right: MediaQuery.of(context).size.width*0.05),
                 child: TextFormField(
                   controller: cnfPasswordController,
                   keyboardType: TextInputType.visiblePassword,
@@ -304,7 +304,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.74, left: MediaQuery.of(context).size.width*0.48),
+                  margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.745, left: MediaQuery.of(context).size.width*0.48),
                   child: RichText(
                     text: TextSpan(
                         text: "OR ",
@@ -319,7 +319,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 Container(
                   height: MediaQuery.of(context).size.height*0.07,
                   width: MediaQuery.of(context).size.width*0.9,
-                  margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.78, left: MediaQuery.of(context).size.width*0.05, right: MediaQuery.of(context).size.width*0.05),
+                  margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.79, left: MediaQuery.of(context).size.width*0.05, right: MediaQuery.of(context).size.width*0.05),
                   child: RaisedButton(
                     color: Colors.white,
                     onPressed: (){
@@ -360,4 +360,3 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 }
-

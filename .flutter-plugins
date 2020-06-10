@@ -1,13 +1,13 @@
 # This is a generated file; do not edit or check into version control.
-cloud_firestore=C:\\Users\\somsu\\AppData\\Roaming\\Pub\\Cache\\hosted\\pub.dartlang.org\\cloud_firestore-0.13.4+2\\
-cloud_firestore_web=C:\\Users\\somsu\\AppData\\Roaming\\Pub\\Cache\\hosted\\pub.dartlang.org\\cloud_firestore_web-0.1.1+2\\
-firebase_auth=C:\\Users\\somsu\\AppData\\Roaming\\Pub\\Cache\\hosted\\pub.dartlang.org\\firebase_auth-0.15.5+3\\
-firebase_auth_web=C:\\Users\\somsu\\AppData\\Roaming\\Pub\\Cache\\hosted\\pub.dartlang.org\\firebase_auth_web-0.1.2\\
-firebase_core=C:\\Users\\somsu\\AppData\\Roaming\\Pub\\Cache\\hosted\\pub.dartlang.org\\firebase_core-0.4.4+3\\
-firebase_core_web=C:\\Users\\somsu\\AppData\\Roaming\\Pub\\Cache\\hosted\\pub.dartlang.org\\firebase_core_web-0.1.1+2\\
-firebase_storage=C:\\Users\\somsu\\AppData\\Roaming\\Pub\\Cache\\hosted\\pub.dartlang.org\\firebase_storage-3.1.5\\
-google_sign_in=C:\\Users\\somsu\\AppData\\Roaming\\Pub\\Cache\\hosted\\pub.dartlang.org\\google_sign_in-4.3.0\\
-google_sign_in_web=C:\\Users\\somsu\\AppData\\Roaming\\Pub\\Cache\\hosted\\pub.dartlang.org\\google_sign_in_web-0.8.4\\
-shared_preferences=C:\\Users\\somsu\\AppData\\Roaming\\Pub\\Cache\\hosted\\pub.dartlang.org\\shared_preferences-0.5.6+3\\
-shared_preferences_macos=C:\\Users\\somsu\\AppData\\Roaming\\Pub\\Cache\\hosted\\pub.dartlang.org\\shared_preferences_macos-0.0.1+6\\
-shared_preferences_web=C:\\Users\\somsu\\AppData\\Roaming\\Pub\\Cache\\hosted\\pub.dartlang.org\\shared_preferences_web-0.1.2+4\\
+cloud_firestore=F:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\cloud_firestore-0.13.4+2\\
+cloud_firestore_web=F:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\cloud_firestore_web-0.1.1+2\\
+firebase_auth=F:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_auth-0.15.5+3\\
+firebase_auth_web=F:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_auth_web-0.1.2\\
+firebase_core=F:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_core-0.4.4+3\\
+firebase_core_web=F:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_core_web-0.1.1+2\\
+firebase_storage=F:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_storage-3.1.5\\
+google_sign_in=F:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\google_sign_in-4.3.0\\
+google_sign_in_web=F:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\google_sign_in_web-0.8.4\\
+shared_preferences=F:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\shared_preferences-0.5.6+3\\
+shared_preferences_macos=F:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\shared_preferences_macos-0.0.1+6\\
+shared_preferences_web=F:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\shared_preferences_web-0.1.2+4\\

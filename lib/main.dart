@@ -4,7 +4,7 @@ import 'package:vtop/UI/Login.dart';
 import 'UI/forgotPass.dart';
 import 'UI/Login.dart';
 import 'UI/Signup.dart';
-// import './UI/SplashScreen.dart';
+import 'UI/SplashScreen.dart';
 void main() {
   runApp(
     MaterialApp(

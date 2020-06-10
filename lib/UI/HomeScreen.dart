@@ -24,47 +24,47 @@ class _ExtendedHomeState extends State<ExtendedHome> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn();
 
-  Future<String> signInWithGoogle() async {
-    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
-    final GoogleSignInAuthentication googleSignInAuthentication =
-    await googleSignInAccount.authentication;
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
-      accessToken: googleSignInAuthentication.accessToken,
-      idToken: googleSignInAuthentication.idToken,
-    );
-    final AuthResult authResult = await _auth.signInWithCredential(credential);
-    final FirebaseUser user = authResult.user;
-    assert(!user.isAnonymous);
-    assert(await user.getIdToken() != null);
-    final FirebaseUser currentUser = await _auth.currentUser();
-    assert(user.uid == currentUser.uid);
-    assert(user.email != null);
-    assert(user.displayName != null);
-    assert(user.photoUrl != null);
-    name = user.displayName;
-    email = user.email;
-    imageUrl = user.photoUrl;
-    return email;
-  }
-  Future<String>getPhoto() async{
-    final FirebaseUser user = await _auth.currentUser();
-    print(user.photoUrl);
-    return user.photoUrl;
-  }
-  Future<String>printEmail() async
-  {
-    signInWithGoogle();
-   String email = await signInWithGoogle();
-   print(email);
-   return email;
-  }
+  // Future<String> signInWithGoogle() async {
+  //   final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+  //   final GoogleSignInAuthentication googleSignInAuthentication =
+  //   await googleSignInAccount.authentication;
+  //   final AuthCredential credential = GoogleAuthProvider.getCredential(
+  //     accessToken: googleSignInAuthentication.accessToken,
+  //     idToken: googleSignInAuthentication.idToken,
+  //   );
+  //   final AuthResult authResult = await _auth.signInWithCredential(credential);
+  //   final FirebaseUser user = authResult.user;
+  //   assert(!user.isAnonymous);
+  //   assert(await user.getIdToken() != null);
+  //   final FirebaseUser currentUser = await _auth.currentUser();
+  //   assert(user.uid == currentUser.uid);
+  //   assert(user.email != null);
+  //   assert(user.displayName != null);
+  //   assert(user.photoUrl != null);
+  //   name = user.displayName;
+  //   email = user.email;
+  //   imageUrl = user.photoUrl;
+  //   return email;
+  // }
+  // Future<String>getPhoto() async{
+  //   final FirebaseUser user = await _auth.currentUser();
+  //   print(user.photoUrl);
+  //   return user.photoUrl;
+  // }
+  // Future<String>printEmail() async
+  // {
+  //   signInWithGoogle();
+  //  String email = await signInWithGoogle();
+  //  print(email);
+  //  return email;
+  // }
 
-  Future<String>printInitial() async{
-    signInWithGoogle();
-    String email = await signInWithGoogle();
-    String initial = email[0];
-    return initial;
-  }
+  // Future<String>printInitial() async{
+  //   signInWithGoogle();
+  //   String email = await signInWithGoogle();
+  //   String initial = email[0];
+  //   return initial;
+  // }
 
   final backgroundColor = Color(0xFF2c2c2c);
   final firstTabColor = Color(0xFF1d1d1d);
@@ -86,7 +86,7 @@ class _ExtendedHomeState extends State<ExtendedHome> {
                    radius: 50,
                    backgroundColor: _color,
                   child: FutureBuilder<String>(
-                    future: printInitial(),
+                    //future: printInitial(),
                     builder:(context, snapShot ){
                     if(snapShot.hasData){
                     return Text(snapShot.data, style: TextStyle(fontSize: 30, color: Colors.white
@@ -99,7 +99,7 @@ class _ExtendedHomeState extends State<ExtendedHome> {
                  ),
                  arrowColor: Colors.white,
                  accountEmail: FutureBuilder<String>(
-                   future: printEmail(),
+                   //future: printEmail(),
                    builder: (context, snapShot ){
                      if(snapShot.hasData){
                        return Text(snapShot.data, style: TextStyle(fontSize: 18),);
