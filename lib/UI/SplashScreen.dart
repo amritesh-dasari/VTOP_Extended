@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flare_splash_screen/flare_splash_screen.dart';
 //import 'package:firebase_auth/firebase_auth.dart';
 //import 'package:vtop/UI/firechanges.dart';
-import 'Login.dart';
+import '../Authentication/Login.dart';
 
 class SplashScr extends StatefulWidget {
   @override

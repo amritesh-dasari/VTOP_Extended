@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:vtop/UI/Login.dart';
-import 'package:vtop/UI/Signup.dart';
+import 'package:vtop/Authentication/Login.dart';
+import 'package:vtop/Authentication/Signup.dart';
 
 class ForgotPassword extends StatefulWidget {
   @override

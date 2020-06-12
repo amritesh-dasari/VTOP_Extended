@@ -3,8 +3,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:vtop/Authentication/auth.dart';
 import 'package:vtop/Authentication/normAuth.dart';
-import 'package:vtop/UI/Signup.dart';
+import 'package:vtop/Authentication/Signup.dart';
 import 'package:vtop/UI/forgotPass.dart';
 // import 'package:vtop/Authentication/Authentication.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -13,19 +14,20 @@ import 'package:vtop/UI/HomeScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
+  final Function toggleView;
+  LoginScreen({this.toggleView});
   @override
   _LoginScreenState createState() => _LoginScreenState();
 
 }
 String _email = "";
 String _pass = "";
+String error ="";
 class _LoginScreenState extends State<LoginScreen> {
-
-
+  final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = new TextEditingController();
   final TextEditingController passwordController = new TextEditingController();
-
 
   @override
   Widget build(BuildContext context) {
@@ -71,6 +73,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                     onSaved: (value) => _email = value.trim(),
                     obscureText: false,
+                    onChanged: (val){
+                      setState(() => _email = val);
+                    },
                     autofocus: false,
                     style: TextStyle(color: Colors.white),
                     decoration: InputDecoration(
@@ -112,6 +117,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     onSaved: (value) => _pass = value.trim(),
                     style: TextStyle(color: Colors.white),
                     obscureText: true,
+                    onChanged: (val){
+                      setState(() => _pass = val);
+                    },
                     autofocus: false,
                     decoration: InputDecoration(
                       errorStyle: TextStyle(color: Colors.white,),
@@ -166,9 +174,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.625, left: MediaQuery.of(context).size.width*0.05, right: MediaQuery.of(context).size.width*0.05),
                   child: RaisedButton(
                     color: Colors.pink,
-                    onPressed: () {
-                      LoginUser(_email, _pass);
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ExtendedHome()));
+                    onPressed: () async {
+                      if(_formKey.currentState.validate()){
+                        setState(() {
+                        // loading = true
+                        });
+                        dynamic result = await _auth.signInWithEmailAndPassword(_email, _pass);
+                        if(result == null){
+                          setState(() {
+                            error = 'Invalid credentials';
+                          });
+                        }
+                      }
                     },
                     child: Text(
                       "LOGIN",

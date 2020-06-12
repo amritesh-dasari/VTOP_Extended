@@ -3,13 +3,16 @@ import 'package:flutter/material.dart';
 // import 'package:vtop/Authentication/Login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:vtop/UI/Login.dart';
+import 'package:vtop/Authentication/Login.dart';
+import 'package:vtop/Authentication/auth.dart';
 import 'package:vtop/UI/SplashScreen.dart';
 //import 'package:vtop/UI/firechanges.dart';
 // import 'package:vtop/UI/firechanges.dart';
 import 'package:vtop/UI/HomeScreen.dart';
 
 class SignupScreen extends StatefulWidget {
+  final Function toggleView;
+  SignupScreen({this.toggleView});
   @override
   _SignupScreenState createState() => _SignupScreenState();
 }
@@ -19,32 +22,12 @@ class _SignupScreenState extends State<SignupScreen> {
   String _password = "";
   String _cnfPass = "";
   final _formKey = GlobalKey<FormState>();
+  final AuthService _auth = AuthService();
   final TextEditingController emailController = new TextEditingController();
   final TextEditingController passwordController = new TextEditingController();
   final TextEditingController cnfPasswordController = new TextEditingController();
   FirebaseUser user;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn googleSignIn = GoogleSignIn();
-
-  Future<String> signInWithGoogle() async {
-    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
-    final GoogleSignInAuthentication googleSignInAuthentication =
-    await googleSignInAccount.authentication;
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
-      accessToken: googleSignInAuthentication.accessToken,
-      idToken: googleSignInAuthentication.idToken,
-    );
-    final AuthResult authResult = await _auth.signInWithCredential(credential);
-    final FirebaseUser user = authResult.user;
-    assert(!user.isAnonymous);
-    assert(await user.getIdToken() != null);
-    final FirebaseUser currentUser = await _auth.currentUser();
-    assert(user.uid == currentUser.uid);
-    return 'signInWithGoogle succeeded: $user';
-  }
-
-
-
+ 
   bool validatAndSave()
   {
     if(_formKey.currentState.validate()){
@@ -53,74 +36,7 @@ class _SignupScreenState extends State<SignupScreen> {
     }
     return false;
   }
-  validateAndSignup() async
-  {
-    if (validatAndSave()) {
-      try {
-        FirebaseUser user = (await _auth.createUserWithEmailAndPassword(
-            email: _email, password: _cnfPass)).user;
-        user.sendEmailVerification();
-        setState(() {
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => LoginScreen()));
-        });
-        showDialog(context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                content: Container(
-                  child: Text("Please check your VIT-AP Email-ID for verifiation"),
-
-                ),
-              );
-            }
-        );
-        print('Login successfull user id of user is  : ${user.uid}');
-      } catch (error) {
-        switch (error.code) {
-          case "ERROR_EMAIL_ALREADY_IN_USE":
-            {
-              setState(() {
-                String errorMsg = "Email-ID already exists";
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        content: Container(
-                          child: Text(errorMsg),
-                        ),
-                      );
-                    });
-              });
-            }
-            break;
-          case "ERROR_WRONG_PASSWORD":
-            {
-              setState(() {
-                String errorMsg = "Password doesn\'t match your email.";
-
-
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        content: Container(
-                          child: Text(errorMsg),
-                        ),
-                      );
-                    });
-              });
-            }
-            break;
-          default:
-            {
-              setState(() {
-                String errorMsg = "";
-              });
-            }
-        }
-      }
-    }
-  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -177,6 +93,9 @@ class _SignupScreenState extends State<SignupScreen> {
                     }
                     else
                       return null;
+                  },
+                  onChanged: (val){
+                    setState(() => _email = val );
                   },
                   onSaved: (value) => _email = value.trim(),
                   style: TextStyle(color: Colors.white),
@@ -259,6 +178,11 @@ class _SignupScreenState extends State<SignupScreen> {
                     return null;
                   },
                   onSaved: (value) => _cnfPass = value.trim(),
+                  onChanged: (val){
+                    setState(() {
+                      _cnfPass = val;
+                    });
+                  },
                   style: TextStyle(color: Colors.white),
                   obscureText: true,
                   autofocus: false,
@@ -292,7 +216,14 @@ class _SignupScreenState extends State<SignupScreen> {
                   margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.655, left: MediaQuery.of(context).size.width*0.05, right: MediaQuery.of(context).size.width*0.05),
                   child: RaisedButton(
                     color: Colors.pink,
-                    onPressed: validateAndSignup,
+                    onPressed:() async {
+                      if(_formKey.currentState.validate()){
+                        setState(() {
+                          //loading = true;
+                        });
+                      }
+                      dynamic result = await _auth.registerWithEmailAndPassword(_email, _cnfPass);
+                    },
                     child: Text(
                       "SIGN UP",
                       style: TextStyle(
@@ -323,7 +254,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   child: RaisedButton(
                     color: Colors.white,
                     onPressed: (){
-                      signInWithGoogle().whenComplete(() => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ExtendedHome())));
+                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ExtendedHome()));
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
