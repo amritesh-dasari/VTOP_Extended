@@ -8,14 +8,14 @@ class Authenticate extends StatefulWidget {
 }
 
 class _AuthenticateState extends State<Authenticate> {
-  bool showSignIn = true;
+  bool initialSignIN = true;
   void toggleView() {
-    setState(() => showSignIn = !showSignIn);
+    setState(() => initialSignIN = !initialSignIN);
   }
 
   @override
   Widget build(BuildContext context) {
-    if (showSignIn) {
+    if (initialSignIN) {
       return LoginScreen(toggleView: toggleView);
     } else {
       return SignupScreen(toggleView: toggleView);
