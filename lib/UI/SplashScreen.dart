@@ -1,51 +1,35 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flare_splash_screen/flare_splash_screen.dart';
+//import 'package:firebase_auth/firebase_auth.dart';
 //import 'package:vtop/UI/firechanges.dart';
-import 'HomeScreen.dart';
+import 'Login.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScr extends StatefulWidget {
   @override
-  _SplashScreen createState() => _SplashScreen();
+  _SplashScr createState() => _SplashScr();
 }
 
-class _SplashScreen extends State<SplashScreen> {
+class _SplashScr extends State<SplashScr> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Stack(
-        children: <Widget>[
-          Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  image: DecorationImage(image: AssetImage('assets/images/void.jpg'),
-                  fit: BoxFit.cover,
-                  ),
-                ),
-        ),
-
-        Container(
-          margin: EdgeInsets.only(top:MediaQuery.of(context).size.height*0.7, left:MediaQuery.of(context).size.width*0.3, right:MediaQuery.of(context).size.width*0.3 ),
-          child: Text("Continue", 
-          
-          style: TextStyle(color: Colors.white,
-          fontSize: 45,
-          )),
-        ),
-
-        Container(
-          margin: EdgeInsets.only(top:MediaQuery.of(context).size.height*0.8, left:MediaQuery.of(context).size.width*0.4, right:MediaQuery.of(context).size.width*0.3 ),
-          child: IconButton(icon: Icon(Icons.arrow_forward, size: 50, color: Colors.white,),
-            onPressed: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => ExtendedHome()));
+    String asset = "assets/SplashScreen.flr";
+    var _size = MediaQuery.of(context).size;
+    return Center(
+      child: Container(
+        height: _size.height,
+        width: _size.width,
+        child: SplashScreen.callback(
+            name: asset,
+            fit:BoxFit.fitWidth,
+            onSuccess: (_){
+              Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => LoginScreen()));
             },
-          ),
-        )
-        
-        ],       
+            onError: null,
+            loopAnimation: 'Bounce',
+            until: () => Future.delayed(Duration(milliseconds: 0)),
+        ),
       ),
     );
   }

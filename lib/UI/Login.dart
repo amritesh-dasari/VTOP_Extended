@@ -168,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     color: Colors.pink,
                     onPressed: () {
                       LoginUser(_email, _pass);
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ExtendedHome()));
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ExtendedHome()));
                     },
                     child: Text(
                       "LOGIN",
@@ -274,8 +274,3 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-
-
-
-
-

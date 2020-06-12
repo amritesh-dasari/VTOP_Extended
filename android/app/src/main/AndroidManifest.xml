@@ -7,7 +7,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="vtop extended"
+        android:label="Vtop Extended"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

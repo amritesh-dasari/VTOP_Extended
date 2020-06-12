@@ -8,7 +8,7 @@ import 'UI/SplashScreen.dart';
 void main() {
   runApp(
     MaterialApp(
-      home: LoginScreen(),
+      home: SplashScr(),
       debugShowCheckedModeBanner: false,
     ),
   );
