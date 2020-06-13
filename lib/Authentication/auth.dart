@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import '../Authentication/user.dart';
+import 'googleAuth.dart';
 
 
 
@@ -17,7 +19,26 @@ class AuthService {
   Stream<User> get user {
     return _auth.onAuthStateChanged.map(_userFormFirebaseUser);
   }
+    
+Future<String> signInWithGoogle() async {
+    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+    final GoogleSignInAuthentication googleSignInAuthentication =
+    await googleSignInAccount.authentication;
+    final AuthCredential credential = GoogleAuthProvider.getCredential(
+      accessToken: googleSignInAuthentication.accessToken,
+      idToken: googleSignInAuthentication.idToken,
+    );
+    final AuthResult authResult = await _auth.signInWithCredential(credential);
+    final FirebaseUser user = authResult.user;
+    String email = user.email;
 
+    assert(!user.isAnonymous);
+    assert(await user.getIdToken() != null);
+    final FirebaseUser currentUser = await _auth.currentUser();
+    assert(user.uid == currentUser.uid);
+//    user.sendEmailVerification();
+    return 'signInWithGoogle succeeded: $user, email $email';
+  }
   //sign in anon
   Future signInAnon() async {
     try {
@@ -56,6 +77,7 @@ class AuthService {
     }
   }
 
+
   //sign out
   Future signOut() async {
     try {
@@ -66,53 +88,4 @@ class AuthService {
     }
   }
 }
-
-
-// FirebaseUser user;
-// final FirebaseAuth _auth = FirebaseAuth.instance;
-// final _formKey = GlobalKey<FormState>();
-
-
-// Future<bool> isUserLoggedIn() async {
-//   var user = await _auth.currentUser();
-//   return user != null;
-// }
-// LoginUser(String username, String password) async {
-//   String email;
-//   String pwd;
-//   if(validateAndSave()){
-//     isUserLoggedIn();
-//     try{
-//       user = (await _auth.signInWithEmailAndPassword(email: email, password: pwd)).user;
-//       print("Login successful");
-
-//     }catch(error){
-//       switch(error.code){
-//         case "ERROR_USER_NOT_FOUND": {
-//           print("No user found");
-//         }
-//         break;
-//         case "ERROR_WRONG_PASSWORD":
-//           {
-//             print("Wong password");
-//           }
-//           break;
-//         default:
-//           {
-//             print("no internet");
-//           }
-//       }
-//     }
-//   }
-// }
-
-// bool validateAndSave()
-//   {
-//     if(_formKey.currentState.validate()){
-//       _formKey.currentState.save();
-//       return true;
-//     }
-//     return false;
-//   }
-
 

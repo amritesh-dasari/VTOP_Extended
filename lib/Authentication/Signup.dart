@@ -224,8 +224,8 @@ class _SignupScreenState extends State<SignupScreen> {
                           //loading = true;
                         });
                       }
-                      dynamic result = await _auth.registerWithEmailAndPassword(_email, _cnfPass);
                        try{
+                         dynamic result = await _auth.registerWithEmailAndPassword(_email, _cnfPass);
                          if (result == null) {
                         setState(() {
                           error = 'please supply a valid email';
@@ -237,7 +237,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ExtendedHome()));
                       }
                        }catch(e){
-                         debugPrint(e);
+                         debugPrint(e.toString());
                        }
                     },
                     child: Text(

@@ -6,6 +6,7 @@ import 'package:random_color/random_color.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'dart:ui';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:vtop/Authentication/Login.dart';
 class ExtendedHome extends StatefulWidget {
   @override
   _ExtendedHomeState createState() => _ExtendedHomeState();
@@ -66,7 +67,7 @@ class _ExtendedHomeState extends State<ExtendedHome> {
               Container(
                 child: IconButton(
                   onPressed: () async {
-                    await _auth.signOut();
+                    await _auth.signOut().whenComplete(() => LoginScreen());
                   },
                   icon: Icon(
                     Icons.person,

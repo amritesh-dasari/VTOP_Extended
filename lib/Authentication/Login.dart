@@ -179,7 +179,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         setState(() {
                         // loading = true
                         });
-                        dynamic result = await _auth.signInWithEmailAndPassword(_email, _pass);
+                        dynamic result = await _auth.signInWithEmailAndPassword(_email, _pass).whenComplete(() => ExtendedHome());
                         if(result == null){
                           setState(() {
                             error = 'Invalid credentials';
@@ -216,10 +216,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.75, left: MediaQuery.of(context).size.width*0.05, right: MediaQuery.of(context).size.width*0.05),
                   child: RaisedButton(
                     color: Colors.white,
-                    onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder:  (context) => ExtendedHome()));
-                      // signInWithGoogle().whenComplete(() => Navigator.pushReplacement(context, MaterialPageRoute(builder:  (context) => ExtendedHome())));
-                    },
+                    onPressed: () async{
+                        dynamic result = await _auth.signInWithGoogle().whenComplete(() => ExtendedHome());
+                        if(result ==null){
+                          setState(() {
+                            error="LOL what the fuk";
+                          });
+                        }
+                      }
+                    ,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
