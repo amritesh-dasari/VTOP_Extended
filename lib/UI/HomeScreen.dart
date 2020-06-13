@@ -80,7 +80,7 @@ class _ExtendedHomeState extends State<ExtendedHome> {
            child: ListView(
              children: <Widget>[
                UserAccountsDrawerHeader(
-                 accountName: Text(""),
+                 accountName: Text("Account Name"),
                  currentAccountPicture: CircleAvatar(
                    //backgroundImage: NetworkImage(),
                    radius: 50,

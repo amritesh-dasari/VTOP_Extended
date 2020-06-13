@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vtop/Authentication/auth.dart';
 import 'package:vtop/Authentication/wrapper.dart';
+import 'package:vtop/UI/SplashScreen.dart';
 import 'Authentication/Login.dart';
 import 'Authentication/user.dart';
 import 'UI/forgotPass.dart';
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         initialRoute: '/',
         routes: {
-          '/': (context) => Wrapper(),
+          '/': (context) => SplashScr(),
         },
       ),
     );

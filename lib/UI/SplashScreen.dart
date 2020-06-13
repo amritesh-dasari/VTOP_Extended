@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flare_splash_screen/flare_splash_screen.dart';
+import 'package:vtop/Authentication/wrapper.dart';
 //import 'package:firebase_auth/firebase_auth.dart';
 //import 'package:vtop/UI/firechanges.dart';
 import '../Authentication/Login.dart';
@@ -24,7 +25,7 @@ class _SplashScr extends State<SplashScr> {
             name: asset,
             fit:BoxFit.fitWidth,
             onSuccess: (_){
-              Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => LoginScreen()));
+              Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => Wrapper()));
             },
             onError: null,
             loopAnimation: 'Bounce',
