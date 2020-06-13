@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // import 'package:vtop/Authentication/Login.dart';
@@ -223,6 +225,20 @@ class _SignupScreenState extends State<SignupScreen> {
                         });
                       }
                       dynamic result = await _auth.registerWithEmailAndPassword(_email, _cnfPass);
+                       try{
+                         if (result == null) {
+                        setState(() {
+                          error = 'please supply a valid email';
+                          print(error);
+                          //loading = false;
+                        });
+                      }
+                      else{
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ExtendedHome()));
+                      }
+                       }catch(e){
+                         debugPrint(e);
+                       }
                     },
                     child: Text(
                       "SIGN UP",
