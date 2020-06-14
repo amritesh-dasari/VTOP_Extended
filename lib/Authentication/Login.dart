@@ -183,22 +183,25 @@ class _LoginScreenState extends State<LoginScreen> {
                         if(result == null){
                           setState(() {
                           Flushbar(
+                          borderRadius: 8.0,
                           title: "Invalid Password/Email",
-                          message: "Hello",
+                          message: "Please enter correct Email and Password",
                           flushbarPosition: FlushbarPosition.BOTTOM,
                           flushbarStyle: FlushbarStyle.FLOATING,
                           reverseAnimationCurve: Curves.decelerate,
-                          forwardAnimationCurve: Curves.elasticOut,
+                          forwardAnimationCurve: Curves.bounceIn,
                           backgroundColor: Colors.black,
+                          mainButton: FlatButton(onPressed:(){Navigator.pop(context);}, child: Text("OK", style: TextStyle(color: Colors.white),)),
                           boxShadows: [
                             BoxShadow(
                               color:Colors.blue[800],
-                              offset: Offset(0.0, 2.0),
-                              blurRadius: 3.0
+                              offset: Offset(0.0, 5.0),
+                              blurRadius: 8.0
                             )
                           ],
+                          margin: EdgeInsets.only(bottom: 8, left: 8, right: 8),
                           isDismissible: true,
-                          duration: Duration(seconds: 4),
+                          duration: Duration(seconds: 10),
                           icon: Icon(
                             Icons.error_outline,
                             color: Colors.white,
@@ -245,7 +248,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         dynamic result = await _auth.signInWithGoogle().whenComplete(() => ExtendedHome());
                         if(result == null){
                           setState(() {
-                            error="LOL what the fuk";
+                            error=" ";
                           });
                         }
                       }

@@ -232,7 +232,8 @@ class _SignupScreenState extends State<SignupScreen> {
                         });
                       }
                       else{
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+                        await _auth.signOut().whenComplete(() => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen())));
+                        
                       }
                        }catch(e){
                          debugPrint(e.toString());
@@ -272,13 +273,13 @@ class _SignupScreenState extends State<SignupScreen> {
                   child: RaisedButton(
                     color: Colors.white,
                     onPressed: () async{
-                      dynamic result = await _auth.signInWithGoogle().whenComplete(() => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ExtendedHome())));
+                        dynamic result = await _auth.signInWithGoogle().whenComplete(() => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ExtendedHome())));
                         if(result == null){
                           setState(() {
-                            error="LOL what the fuk";
+                            error=" ";
                           });
                         }
-                    },
+                      },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
