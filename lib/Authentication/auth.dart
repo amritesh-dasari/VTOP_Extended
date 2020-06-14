@@ -18,8 +18,7 @@ class AuthService {
   //auth change user stream
   Stream<User> get user {
     return _auth.onAuthStateChanged.map(_userFormFirebaseUser);
-  }
-    
+  } 
 Future<String> signInWithGoogle() async {
     final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
     final GoogleSignInAuthentication googleSignInAuthentication =

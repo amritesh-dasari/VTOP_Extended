@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -140,6 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           color: Colors.white,
                           size: 25,
                         ),
+                        // errorText: error,
                         hintText: "Ssshhh!!! its a secret",
                         hintStyle: TextStyle(color: Colors.white, fontSize: 15),
                         labelText: "Password",
@@ -176,15 +178,38 @@ class _LoginScreenState extends State<LoginScreen> {
                     color: Colors.pink,
                     onPressed: () async {
                       if(_formKey.currentState.validate()){
-                        setState(() {
-                        // loading = true
-                        });
+                      try{
                         dynamic result = await _auth.signInWithEmailAndPassword(_email, _pass).whenComplete(() => ExtendedHome());
                         if(result == null){
                           setState(() {
-                            error = 'Invalid credentials';
+                          Flushbar(
+                          title: "Invalid Password/Email",
+                          message: "Hello",
+                          flushbarPosition: FlushbarPosition.BOTTOM,
+                          flushbarStyle: FlushbarStyle.FLOATING,
+                          reverseAnimationCurve: Curves.decelerate,
+                          forwardAnimationCurve: Curves.elasticOut,
+                          backgroundColor: Colors.black,
+                          boxShadows: [
+                            BoxShadow(
+                              color:Colors.blue[800],
+                              offset: Offset(0.0, 2.0),
+                              blurRadius: 3.0
+                            )
+                          ],
+                          isDismissible: true,
+                          duration: Duration(seconds: 4),
+                          icon: Icon(
+                            Icons.error_outline,
+                            color: Colors.white,
+                            ),                
+                        )..show(context);
                           });
                         }
+                      }catch(e){
+                        var errorr = e.toString();
+                        print(errorr);
+                      }
                       }
                     },
                     child: Text(
@@ -218,7 +243,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     color: Colors.white,
                     onPressed: () async{
                         dynamic result = await _auth.signInWithGoogle().whenComplete(() => ExtendedHome());
-                        if(result ==null){
+                        if(result == null){
                           setState(() {
                             error="LOL what the fuk";
                           });

@@ -161,6 +161,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         color: Colors.white,
                         size: 25,
                       ),
+                      errorStyle: TextStyle(color :Colors.white),
                       hintText: "Ssshhh!!! its a secret",
                       hintStyle: TextStyle(color: Colors.white, fontSize: 15),
                       labelText: "Password",
@@ -206,6 +207,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         color: Colors.white,
                         size: 25,
                       ),
+                      errorStyle: TextStyle(color:Colors.white),
                       hintText: "Mind Writing it again?",
                       hintStyle: TextStyle(color: Colors.white, fontSize: 15),
                       labelText: "Confirm Password",
@@ -220,11 +222,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     color: Colors.pink,
                     onPressed:() async {
                       if(_formKey.currentState.validate()){
-                        setState(() {
-                          //loading = true;
-                        });
-                      }
-                       try{
+                        try{
                          dynamic result = await _auth.registerWithEmailAndPassword(_email, _cnfPass);
                          if (result == null) {
                         setState(() {
@@ -234,11 +232,15 @@ class _SignupScreenState extends State<SignupScreen> {
                         });
                       }
                       else{
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ExtendedHome()));
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen()));
                       }
                        }catch(e){
                          debugPrint(e.toString());
                        }
+                      }
+                      else{
+                        print('vitap email not provided');
+                      }
                     },
                     child: Text(
                       "SIGN UP",
@@ -269,8 +271,13 @@ class _SignupScreenState extends State<SignupScreen> {
                   margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.79, left: MediaQuery.of(context).size.width*0.05, right: MediaQuery.of(context).size.width*0.05),
                   child: RaisedButton(
                     color: Colors.white,
-                    onPressed: (){
-                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ExtendedHome()));
+                    onPressed: () async{
+                      dynamic result = await _auth.signInWithGoogle().whenComplete(() => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ExtendedHome())));
+                        if(result == null){
+                          setState(() {
+                            error="LOL what the fuk";
+                          });
+                        }
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
