@@ -1,17 +1,25 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:vtop/Authentication/auth.dart';
+import 'package:vtop/Authentication/normAuth.dart';
 import 'package:vtop/Authentication/Signup.dart';
 import 'package:vtop/UI/forgotPass.dart';
+// import 'package:vtop/Authentication/Authentication.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+//import 'package:vtop/UI/firechanges.dart';
 import 'package:vtop/UI/HomeScreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 class LoginScreen extends StatefulWidget {
   final Function toggleView;
   LoginScreen({this.toggleView});
   @override
   _LoginScreenState createState() => _LoginScreenState();
+
 }
 String _email = "";
 String _pass = "";
@@ -21,6 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = new TextEditingController();
   final TextEditingController passwordController = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
           color: Colors.black,
           image: DecorationImage(
             image: AssetImage('assets/images/universe.jpg'),
-            colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.45), BlendMode.darken),
+            colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.37), BlendMode.darken),
             fit: BoxFit.cover
           )
         ),
@@ -170,7 +179,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () async {
                       if(_formKey.currentState.validate()){
                       try{
-                        dynamic result = await _auth.signInWithEmailAndPassword(_email, _pass).whenComplete(() => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ExtendedHome())));
+                        dynamic result = await _auth.signInWithEmailAndPassword(_email, _pass).whenComplete(() => ExtendedHome());
                         if(result == null){
                           setState(() {
                           Flushbar(
@@ -236,7 +245,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: RaisedButton(
                     color: Colors.white,
                     onPressed: () async{
-                        dynamic result = await _auth.signInWithGoogle().whenComplete(() => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ExtendedHome())));
+                        dynamic result = await _auth.signInWithGoogle().whenComplete(() => ExtendedHome());
                         if(result == null){
                           setState(() {
                             error=" ";
