@@ -67,7 +67,7 @@ class _ExtendedHomeState extends State<ExtendedHome> {
               Container(
                 child: IconButton(
                   onPressed: () async {
-                    await _auth.signOut().whenComplete(() => LoginScreen());
+                    await _auth.signOut().whenComplete(() => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen())));
                   },
                   icon: Icon(
                     Icons.person,

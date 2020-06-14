@@ -50,7 +50,7 @@ class _SignupScreenState extends State<SignupScreen> {
           color: Colors.black,
           image: DecorationImage(
             image: AssetImage('assets/images/Space.png'),
-            colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.4), BlendMode.darken),
+            colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.45), BlendMode.darken),
             fit: BoxFit.cover
           )
         ),
