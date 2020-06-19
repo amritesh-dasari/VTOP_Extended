@@ -67,7 +67,8 @@ class _ExtendedHomeState extends State<ExtendedHome> {
               Container(
                 child: IconButton(
                   onPressed: () async {
-                    await _auth.signOut().whenComplete(() => LoginScreen());
+                    // await googleSignIn.disconnect();
+                    await _auth.signOut();
                   },
                   icon: Icon(
                     Icons.person,

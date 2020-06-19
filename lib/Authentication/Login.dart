@@ -179,7 +179,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () async {
                       if(_formKey.currentState.validate()){
                       try{
-                        dynamic result = await _auth.signInWithEmailAndPassword(_email, _pass).whenComplete(() => ExtendedHome());
+                        dynamic result = await _auth.signInWithEmailAndPassword(_email, _pass);
                         if(result == null){
                           setState(() {
                           Flushbar(
@@ -245,7 +245,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: RaisedButton(
                     color: Colors.white,
                     onPressed: () async{
-                        dynamic result = await _auth.signInWithGoogle().whenComplete(() => ExtendedHome());
+                        dynamic result = await _auth.signInWithGoogle();
                         if(result == null){
                           setState(() {
                             error=" ";

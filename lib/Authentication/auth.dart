@@ -30,7 +30,6 @@ Future<String> signInWithGoogle() async {
     final AuthResult authResult = await _auth.signInWithCredential(credential);
     final FirebaseUser user = authResult.user;
     String email = user.email;
-
     assert(!user.isAnonymous);
     assert(await user.getIdToken() != null);
     final FirebaseUser currentUser = await _auth.currentUser();
@@ -76,10 +75,10 @@ Future<String> signInWithGoogle() async {
     }
   }
 
-
   //sign out
   Future signOut() async {
     try {
+      // await googleSignIn.disconnect();
       return await _auth.signOut();
     } catch (e) {
       print(e.toString());

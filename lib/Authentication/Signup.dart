@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // import 'package:vtop/Authentication/Login.dart';
@@ -226,14 +227,36 @@ class _SignupScreenState extends State<SignupScreen> {
                          dynamic result = await _auth.registerWithEmailAndPassword(_email, _cnfPass);
                          if (result == null) {
                         setState(() {
-                          error = 'please supply a valid email';
-                          print(error);
+                          Flushbar(
+                          borderRadius: 8.0,
+                          title: "Email Already in user",
+                          message: "Please enter different Email-id",
+                          flushbarPosition: FlushbarPosition.BOTTOM,
+                          flushbarStyle: FlushbarStyle.FLOATING,
+                          reverseAnimationCurve: Curves.decelerate,
+                          forwardAnimationCurve: Curves.bounceIn,
+                          backgroundColor: Colors.black,
+                          mainButton: FlatButton(onPressed:(){Navigator.pop(context);}, child: Text("OK", style: TextStyle(color: Colors.white),)),
+                          boxShadows: [
+                            BoxShadow(
+                              color:Colors.blue[800],
+                              offset: Offset(0.0, 5.0),
+                              blurRadius: 8.0
+                            )
+                          ],
+                          margin: EdgeInsets.only(bottom: 8, left: 8, right: 8),
+                          isDismissible: true,
+                          duration: Duration(seconds: 10),
+                          icon: Icon(
+                            Icons.error_outline,
+                            color: Colors.white,
+                            ),                
+                        )..show(context);
                           //loading = false;
                         });
                       }
                       else{
                         await _auth.signOut().whenComplete(() => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen())));
-                        
                       }
                        }catch(e){
                          debugPrint(e.toString());
