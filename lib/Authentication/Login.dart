@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:vtop/Authentication/auth.dart';
 import 'package:vtop/Authentication/normAuth.dart';
 import 'package:vtop/Authentication/Signup.dart';
@@ -245,10 +246,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: RaisedButton(
                     color: Colors.white,
                     onPressed: () async{
-                        dynamic result = await _auth.signInWithGoogle();
+                        dynamic result = await _auth.signInWithGoogle().whenComplete(() => SpinKitDualRing(color: Colors.white));
                         if(result == null){
                           setState(() {
-                            error=" ";
+                            error="";
                           });
                         }
                       }

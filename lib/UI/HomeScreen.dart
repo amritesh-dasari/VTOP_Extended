@@ -6,7 +6,7 @@ import 'package:random_color/random_color.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'dart:ui';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:vtop/Authentication/Login.dart';
+import 'package:vtop/Authentication/googleAuth.dart';
 class ExtendedHome extends StatefulWidget {
   @override
   _ExtendedHomeState createState() => _ExtendedHomeState();
@@ -20,7 +20,13 @@ class _ExtendedHomeState extends State<ExtendedHome> {
   String email;
   String imageUrl;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn googleSignIn = GoogleSignIn();
+  Future<String>getUser() async{
+    final FirebaseUser user = await _auth.currentUser();
+    var url = await getUser();
+    print(url);
+    return user.photoUrl;
+  } 
+  
   final backgroundColor = Color(0xFF2c2c2c);
   final firstTabColor = Color(0xFF1d1d1d);
   @override
@@ -29,36 +35,27 @@ class _ExtendedHomeState extends State<ExtendedHome> {
       debugShowCheckedModeBanner: false,
       home: DefaultTabController(length: 2,
         child: Scaffold(
+          backgroundColor: Colors.black,
           drawer: Drawer(
             elevation: 16.0,
             child: ListView(
               children: <Widget>[
                 UserAccountsDrawerHeader(
-                  accountName: Text("Account Name"),
+                  decoration: BoxDecoration(
+                    color: firstTabColor
+                  ),
+                  // accountName: Text(googleSignIn.currentUser.email, style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
                   currentAccountPicture: CircleAvatar(
+                    backgroundImage: NetworkImage(""
+                      // googleSignIn.currentUser.photoUrl
+                      ),
                     radius: 50,
                     backgroundColor: _color,
-                    child: FutureBuilder<String>(
-                      builder:(context, snapShot ){
-                        if(snapShot.hasData){
-                          return Text(snapShot.data, style: TextStyle(fontSize: 30, color: Colors.white),);
-                        } else{
-                          return Text("loading");
-                        }
-                      },
-                    ),
                   ),
                   arrowColor: Colors.white,
-                  accountEmail: FutureBuilder<String>(
-                    builder: (context, snapShot ){
-                      if(snapShot.hasData){
-                        return Text(snapShot.data, style: TextStyle(fontSize: 18),);
-                      } else{
-                        return Text("loading");
-                      }
-                    },
-                  )
+                  // accountEmail: Text(googleSignIn.currentUser.displayName, style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),),
                 ),
+              
               ],
             ),
           ),
@@ -67,7 +64,7 @@ class _ExtendedHomeState extends State<ExtendedHome> {
               Container(
                 child: IconButton(
                   onPressed: () async {
-                    // await googleSignIn.disconnect();
+                    // await getUser();
                     await _auth.signOut();
                   },
                   icon: Icon(

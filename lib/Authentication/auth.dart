@@ -9,7 +9,6 @@ import 'googleAuth.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
   //create user obj based on FIrebaseUser
   User _userFormFirebaseUser(FirebaseUser user) {
     return user != null ? User(uid: user.uid) : null;
@@ -35,6 +34,7 @@ Future<String> signInWithGoogle() async {
     final FirebaseUser currentUser = await _auth.currentUser();
     assert(user.uid == currentUser.uid);
 //    user.sendEmailVerification();
+    String photoURL = user.photoUrl;
     return 'signInWithGoogle succeeded: $user, email $email';
   }
   //sign in anon
@@ -78,9 +78,18 @@ Future<String> signInWithGoogle() async {
   //sign out
   Future signOut() async {
     try {
-      // await googleSignIn.disconnect();
       return await _auth.signOut();
     } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Future signOutGoogle() async {
+    try{
+      await googleSignIn.disconnect();
+      return await googleSignIn.signOut();
+    }catch(e){
       print(e.toString());
       return null;
     }
