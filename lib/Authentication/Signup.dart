@@ -30,7 +30,29 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController passwordController = new TextEditingController();
   final TextEditingController cnfPasswordController = new TextEditingController();
   FirebaseUser user;
- 
+    showAlertDialog(BuildContext context){
+      AlertDialog alert = AlertDialog(
+        backgroundColor: Colors.black,
+        content: new Row(
+            children: [
+               Padding(
+                 padding: const EdgeInsets.all(8.0),
+                 child: CircularProgressIndicator(),
+               ),
+               SizedBox(width:20),
+               Padding(
+                 padding: const EdgeInsets.all(8.0),
+                 child: Container(margin: EdgeInsets.only(left: 5),child:Text("Loading", style: TextStyle(color:Colors.white), )),
+               ),
+            ],),
+      );
+      showDialog(barrierDismissible: false,
+        context:context,
+        builder:(BuildContext context){
+          return alert;
+        },
+      );
+    }
   bool validatAndSave()
   {
     if(_formKey.currentState.validate()){
@@ -224,12 +246,14 @@ class _SignupScreenState extends State<SignupScreen> {
                     onPressed:() async {
                       if(_formKey.currentState.validate()){
                         try{
+                        showAlertDialog(context);
                          dynamic result = await _auth.registerWithEmailAndPassword(_email, _cnfPass);
+                         Navigator.pop(context);
                          if (result == null) {
                         setState(() {
                           Flushbar(
                           borderRadius: 8.0,
-                          title: "Email Already in user",
+                          title: "Email Already in use!!",
                           message: "Please enter different Email-id",
                           flushbarPosition: FlushbarPosition.BOTTOM,
                           flushbarStyle: FlushbarStyle.FLOATING,
@@ -275,61 +299,6 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     elevation: 25,
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.745, left: MediaQuery.of(context).size.width*0.48),
-                  child: RichText(
-                    text: TextSpan(
-                        text: "OR ",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700
-                        ),
-                      ),
-                    )
-                ),
-                Container(
-                  height: MediaQuery.of(context).size.height*0.07,
-                  width: MediaQuery.of(context).size.width*0.9,
-                  margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.79, left: MediaQuery.of(context).size.width*0.05, right: MediaQuery.of(context).size.width*0.05),
-                  child: RaisedButton(
-                    color: Colors.white,
-                    onPressed: () async{
-                        dynamic result = await _auth.signInWithGoogle();
-                        if(result == null){
-                          setState(() {
-                            error="";
-                          });
-                        }
-                      },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.only(right: 10),
-                          width: 30,
-                          height: 30,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('assets/images/google.png'),
-                            )
-                          ),
-                        ),
-                        Container(
-                          child: Text('Sign Up with Google',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w800,
-                              fontSize: 15
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    elevation: 20,
-                  )
                 ),
             ],
           ),

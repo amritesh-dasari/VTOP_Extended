@@ -30,10 +30,36 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = new TextEditingController();
   final TextEditingController passwordController = new TextEditingController();
+  final GlobalKey<ScaffoldState> _globalKey = new GlobalKey<ScaffoldState>();
+
+  showAlertDialog(BuildContext context){
+      AlertDialog alert = AlertDialog(
+        backgroundColor: Colors.black,
+        content: new Row(
+            children: [
+               Padding(
+                 padding: const EdgeInsets.all(8.0),
+                 child: CircularProgressIndicator(),
+               ),
+               SizedBox(width:20),
+               Padding(
+                 padding: const EdgeInsets.all(8.0),
+                 child: Container(margin: EdgeInsets.only(left: 5),child:Text("Loading", style: TextStyle(color:Colors.white), )),
+               ),
+            ],),
+      );
+      showDialog(barrierDismissible: false,
+        context:context,
+        builder:(BuildContext context){
+          return alert;
+        },
+      );
+    }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _globalKey,
       resizeToAvoidBottomInset: false,
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -63,6 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Container(
                   margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.33, left: MediaQuery.of(context).size.width*0.05, right: MediaQuery.of(context).size.width*0.05),
                   child: TextFormField(
+                    autocorrect: true,
                     controller: emailController,
                     keyboardType: TextInputType.emailAddress,
                     validator: (value) {
@@ -180,7 +207,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () async {
                       if(_formKey.currentState.validate()){
                       try{
+                        showAlertDialog(context);
                         dynamic result = await _auth.signInWithEmailAndPassword(_email, _pass);
+                        Navigator.pop(context);
                         if(result == null){
                           setState(() {
                           Flushbar(
@@ -208,7 +237,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             color: Colors.white,
                             ),                
                         )..show(context);
-                          });
+                        }
+                        );
                         }
                       }catch(e){
                         var errorr = e.toString();
@@ -226,62 +256,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     elevation: 25,
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.71, left: MediaQuery.of(context).size.width*0.48),
-                  child: RichText(
-                    text: TextSpan(
-                        text: "OR ",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700
-                        ),
-                      ),
-                    )
-                ),
-                Container(
-                  height: MediaQuery.of(context).size.height*0.07,
-                  width: MediaQuery.of(context).size.width*0.9,
-                  margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.75, left: MediaQuery.of(context).size.width*0.05, right: MediaQuery.of(context).size.width*0.05),
-                  child: RaisedButton(
-                    color: Colors.white,
-                    onPressed: () async{
-                        dynamic result = await _auth.signInWithGoogle().whenComplete(() => SpinKitDualRing(color: Colors.white));
-                        if(result == null){
-                          setState(() {
-                            error="";
-                          });
-                        }
-                      }
-                    ,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.only(right: 10),
-                          width: 30,
-                          height: 30,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('assets/images/google.png'),
-                            )
-                          ),
-                        ),
-                        Container(
-                          child: Text('Login with Google',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w800,
-                              fontSize: 15
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    elevation: 20,
-                  )
-                ),
+                
                 Center(
                   child: Container(
                     margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.9,bottom: MediaQuery.of(context).size.height*0.05,left: MediaQuery.of(context).size.width*0.18, right: MediaQuery.of(context).size.width*0.18),
@@ -296,8 +271,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         children: <TextSpan>[
                           TextSpan(
                             recognizer: TapGestureRecognizer()..onTap = () {
-                              Navigator.push(context,
-                                MaterialPageRoute(builder: (context) =>SignupScreen()));
+                              Navigator.push(context, PageRouteBuilder(
+                                pageBuilder: (c, a1, a2) => SignupScreen(),
+                                transitionsBuilder: (c, anim, a2, child) => SlideTransition(child: child, position: Tween<Offset>(
+                                  begin: const Offset(1,0),
+                                  end: Offset.zero,
+                                ).animate(anim),
+                                ),
+                                transitionDuration: Duration(milliseconds: 300)
+                              ));
                             },
                             text:' Sign up',
                             style: TextStyle(
