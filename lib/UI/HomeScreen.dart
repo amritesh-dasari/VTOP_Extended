@@ -3,10 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:firebase_auth/firebase_auth.dart";
 import 'package:random_color/random_color.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+// import 'package:google_sign_in/google_sign_in.dart';
 import 'dart:ui';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:vtop/Authentication/googleAuth.dart';
+import 'package:vtop/Authentication/auth.dart';
+// import 'package:vtop/Authentication/googleAuth.dart';
 class ExtendedHome extends StatefulWidget {
   @override
   _ExtendedHomeState createState() => _ExtendedHomeState();
@@ -20,13 +21,25 @@ class _ExtendedHomeState extends State<ExtendedHome> {
   String email;
   String imageUrl;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  Future<String>getUser() async{
-    final FirebaseUser user = await _auth.currentUser();
-    var url = await getUser();
-    print(url);
-    return user.photoUrl;
-  } 
-  
+
+  FirebaseUser user;
+  FirebaseAuth auth;
+
+  @override
+  void initState(){
+    super.initState();
+    auth = FirebaseAuth.instance;
+    getCurrentUser();
+  }
+  getCurrentUser() async {
+    user = await auth.currentUser();
+    // user.isEmailVerified;
+    print("Hello " + user.email.toString());
+    setState(() {
+      
+    });
+  }
+
   final backgroundColor = Color(0xFF2c2c2c);
   final firstTabColor = Color(0xFF1d1d1d);
   @override
@@ -44,18 +57,17 @@ class _ExtendedHomeState extends State<ExtendedHome> {
                   decoration: BoxDecoration(
                     color: firstTabColor
                   ),
-                  // accountName: Text(googleSignIn.currentUser.email, style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
+                  accountName: Text("${user.displayName}", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
                   currentAccountPicture: CircleAvatar(
-                    backgroundImage: NetworkImage(""
-                      // googleSignIn.currentUser.photoUrl
+                    backgroundImage: NetworkImage(
+                      "${user.photoUrl}"
                       ),
                     radius: 50,
                     backgroundColor: _color,
                   ),
                   arrowColor: Colors.white,
-                  // accountEmail: Text(googleSignIn.currentUser.displayName, style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),),
+                  accountEmail: Text("${user.email}", style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),),
                 ),
-              
               ],
             ),
           ),
