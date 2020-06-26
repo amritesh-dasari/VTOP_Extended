@@ -1,3 +1,4 @@
+import 'package:curved_drawer/curved_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,6 +8,8 @@ import 'package:random_color/random_color.dart';
 import 'dart:ui';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:vtop/Authentication/auth.dart';
+import 'package:vtop/UI/MyAccountPage.dart';
+import 'package:vtop/UI/VtopPage.dart';
 // import 'package:vtop/Authentication/googleAuth.dart';
 class ExtendedHome extends StatefulWidget {
   @override
@@ -34,225 +37,120 @@ class _ExtendedHomeState extends State<ExtendedHome> {
   getCurrentUser() async {
     user = await auth.currentUser();
     // user.isEmailVerified;
-    print("Hello " + user.email.toString());
+    // print("Hello " + user.email.toString());
     setState(() {
       
     });
   }
-
   final backgroundColor = Color(0xFF2c2c2c);
   final firstTabColor = Color(0xFF1d1d1d);
+  final drawerColor = Color(0xFF545353);
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: DefaultTabController(length: 2,
-        child: Scaffold(
-          backgroundColor: Colors.black,
-          drawer: Drawer(
-            elevation: 16.0,
-            child: ListView(
-              children: <Widget>[
-                UserAccountsDrawerHeader(
-                  decoration: BoxDecoration(
-                    color: firstTabColor
-                  ),
-                  accountName: Text("${user.displayName}", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
-                  currentAccountPicture: CircleAvatar(
-                    backgroundImage: NetworkImage(
-                      "${user.photoUrl}"
-                      ),
-                    radius: 50,
-                    backgroundColor: _color,
-                  ),
-                  arrowColor: Colors.white,
-                  accountEmail: Text("${user.email}", style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),),
+    return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            UserAccountsDrawerHeader(
+              decoration: BoxDecoration(
+                color: firstTabColor,
+                borderRadius: BorderRadius.circular(15)
                 ),
-              ],
-            ),
-          ),
-          appBar: AppBar(
-            actions: <Widget>[
-              Container(
-                child: IconButton(
-                  onPressed: () async {
-                    // await getUser();
-                    await _auth.signOut();
-                  },
-                  icon: Icon(
-                    Icons.person,
-                  ),
-                )
-              )
-            ],
-            backgroundColor: backgroundColor,
-            bottom: TabBar(indicatorColor: Colors.purpleAccent,labelColor: Colors.purpleAccent.shade100,unselectedLabelColor: Colors.white,
-              tabs: [
-                Tab(child: Container(child:Text("ACTIVITIES", style: TextStyle(letterSpacing: 1.5, fontSize: 16),)),),
-                Tab(child: Container(child:Text("DISCOVER", style: TextStyle(letterSpacing: 1.5, fontSize: 16),)),),
-              ],
-            ),
-            centerTitle: true,
-            title: Text('EXTENDED',style: TextStyle(fontSize: 22,letterSpacing:7),)
-          ),
-          body: TabBarView(
-            children: [
-              FirstScreen(),
-              SecondScreen(),
-            ],
-          ),
-        ),
-      ),      
-    );
-  }
-}
-List<StaggeredTile> _staggeredTiles = const <StaggeredTile>[
-  const StaggeredTile.count(8, 4),
-  const StaggeredTile.count(4, 4),
-  const StaggeredTile.count(4, 6),
-  const StaggeredTile.count(4, 6),
-  const StaggeredTile.count(4, 4),
-];
-const String hello='Hello there';
-const String hi='Sexy';
-List<Widget> _tiles = const <Widget>[
-  const _Example01Tile( Icons.widgets, hello),
-  const _Example01Tile( Icons.wifi, hi),
-  const _Example01Tile( Icons.panorama_wide_angle, hello),
-  const _Example01Tile( Icons.map, hello),
-  const _Example01Tile( Icons.send, hello),
-];
-class _Example01Tile extends StatelessWidget {
-  const _Example01Tile( this.iconData, this.text);
-  final String text;
-  final IconData iconData;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          image: DecorationImage(
-            fit: BoxFit.cover,
-            image: NetworkImage('https://images.pexels.com/photos/3667816/pexels-photo-3667816.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'),
-            colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.37), BlendMode.darken),
-          )
-        ),
-        child: new InkWell(
-          borderRadius: BorderRadius.circular(20),
-          onTap: () {
-            debugPrint(text);
-          },
-          child: new Center(
-            child: new Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: new Icon(
-                iconData,
-                color: Colors.white,
+              accountName: Text("Somsubro Banerjee",), 
+              accountEmail: Text("somsubro.18BCE7011@vitap.ac.in"),
+              currentAccountPicture: CircleAvatar(
+                backgroundColor: Colors.white,
+                child: Text("S", style:TextStyle(fontSize: 30,color: Colors.black))
+                ),
               ),
+            ListTile(
+              title: Text("My account", style: TextStyle(color: Colors.white),),
+              leading: Icon(Icons.account_circle, color: Colors.red,),
+              onTap: () {
+                 Navigator.push(context, PageRouteBuilder(
+                  pageBuilder: (c, a1, a2) => MyAccountsPage(),
+                  transitionsBuilder: (c, anim, a2, child) => SlideTransition(child: child, position: Tween<Offset>(
+                  begin: const Offset(1,0),
+                  end: Offset.zero,
+                  ).animate(anim),
+                  ),
+                  transitionDuration: Duration(milliseconds: 300)
+                   )
+                   );
+              },
             ),
-          ),
+            Divider(),
+            ListTile(
+              title: Text("Activities",style: TextStyle(color: Colors.white),),
+              leading: Icon(Icons.local_activity,color: Colors.blue,),
+              onTap: () {
+                Navigator.of(context).pop();
+              }
+            ),
+            Divider(),
+            ListTile(
+              title: Text("VTOP",style: TextStyle(color: Colors.white),),
+              leading: Icon(Icons.open_in_browser,color: Colors.amber,),
+              onTap: (){
+                Navigator.push(context, PageRouteBuilder(
+                  pageBuilder: (c, a1, a2) => VtopPage(),
+                  transitionsBuilder: (c, anim, a2, child) => SlideTransition(child: child, position: Tween<Offset>(
+                  begin: const Offset(1,0),
+                  end: Offset.zero,
+                  ).animate(anim),
+                  ),
+                  transitionDuration: Duration(milliseconds: 300)
+                   )
+                   );
+              },
+            ),
+            Divider(),
+            ListTile(
+              title: Text("Teacher Databser",style: TextStyle(color: Colors.white),),
+              leading: Icon(Icons.dashboard, color: Colors.green,),
+            ),
+            Divider(height: 250,),
+            ListTile(
+              title: Text("Logout",style: TextStyle(color: Colors.white),),
+              leading: Icon(Icons.supervised_user_circle, color: Colors.purple,),
+            ),
+
+          ],
         ),
       ),
-    );
-  }
-}
-class FirstScreen extends StatelessWidget {
-  final firstTabColor = Color(0xFF1d1d1d);
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: firstTabColor,
-      body: new Padding(
-        padding: const EdgeInsets.only(top: 12.0),
-        child: new StaggeredGridView.count(
-          crossAxisCount: 8,
-          staggeredTiles: _staggeredTiles,
-          children: _tiles,
-          mainAxisSpacing: 10.0,
-          crossAxisSpacing: 10.0,
-          padding: const EdgeInsets.all(20.0),
-        )
-      )
-    );
-  }
-}
-class SecondScreen extends StatefulWidget {
-  @override
-  _SecondScreenState createState() => _SecondScreenState();
-}
-class _SecondScreenState extends State<SecondScreen> {
-  final secondTabColor = Color(0xFF1d1d1d);
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: secondTabColor,
-      body: StreamBuilder<QuerySnapshot> (
-        stream: Firestore.instance.collection('posts').snapshots(),
-        builder:  (BuildContext context,AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasError)
-            return new Text('Error: ${snapshot.error}', style: TextStyle(color: Colors.white, fontSize: 15),);
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return new Text('Loading...', style: TextStyle(color: Colors.white, fontSize: 15),);
-            default:
-              return ListView.builder(
-                padding: EdgeInsets.all(20),
-                itemCount: snapshot.data.documents.length,
-                itemBuilder: (context, index){
-                  DocumentSnapshot docsSnap = snapshot.data.documents[index];
-                  return  AnimatedContainer(
-                    curve: Curves.fastOutSlowIn,
-                    duration:Duration(seconds:2) ,
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      child: Ink(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            width: 1.0,
-                            color: Colors.grey.shade700,
-                            style: BorderStyle.solid
-                          ),
-                          borderRadius: BorderRadius.circular(20),
-                          image: DecorationImage(
-                            image: NetworkImage('${docsSnap['image']}'),
-                            fit: BoxFit.cover
-                          )
-                        ),
-                        child: ClipRRect(borderRadius: BorderRadius.circular(20),
-                          child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 2.5,sigmaY: 2.5),
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(22),
-                              onTap: (){},
-                              child: Stack(
-                                children: <Widget>[
-                                  Padding(padding: EdgeInsets.only(bottom: 40, top: 150, left: 20),
-                                    child: Text('${docsSnap['text']}',
-                                      textAlign: TextAlign.start,
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white
-                                      ),
-                                    ),
-                                  )
-                                ]
-                              )
-                            ),
-                          )
-                        )
-                      ),
-                    ),
-                  );
-                },
-              );
-          }
-        }
-      ),
+      backgroundColor: backgroundColor,
+      body: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, innerBoxIsSCrolled){
+          return <Widget>[
+            SliverAppBar(
+              backgroundColor: firstTabColor,
+              expandedHeight: 90,
+              floating: true,
+              pinned: true,
+              flexibleSpace: FlexibleSpaceBar(
+                centerTitle: true,
+                title: Text("EXTENDED", style: TextStyle(letterSpacing: 6, color: Colors.white, fontSize: 15),),
+                titlePadding: EdgeInsets.all(20)
+              ),
+            )
+          ];
+        }, 
+        body: Column(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              height: MediaQuery.of(context).size.height/6,
+              width: MediaQuery.of(context).size.width/3,
+              margin: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              child: Card(
+                child: Center(child: Text("put you stuff here")),
+              ),
+            )
+          ],
+        ),
+        ),
     );
   }
 }

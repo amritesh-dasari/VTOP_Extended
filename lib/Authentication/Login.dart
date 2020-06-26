@@ -279,7 +279,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ).animate(anim),
                                 ),
                                 transitionDuration: Duration(milliseconds: 300)
-                              ));
+                              )
+                              );
                             },
                             text:' Sign up',
                             style: TextStyle(
