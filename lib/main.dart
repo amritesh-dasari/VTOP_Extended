@@ -5,8 +5,10 @@ import 'package:vtop/Authentication/auth.dart';
 import 'package:vtop/UI/HomeScreen.dart';
 import 'package:vtop/UI/SplashScreen.dart';
 import 'Authentication/user.dart';
+
 void main() => runApp(MyApp());
 final backgroundColor = Color(0xFF2c2c2c);
+
 // final drawerColor = Color(0xFF363636);
 class MyApp extends StatelessWidget {
   @override
@@ -19,7 +21,9 @@ class MyApp extends StatelessWidget {
         ),
         debugShowCheckedModeBanner: false,
         initialRoute: '/',
-        routes: {'/': (context) => ExtendedHome(),},
+        routes: {
+          '/': (context) => ExtendedHome(),
+        },
       ),
     );
   }
