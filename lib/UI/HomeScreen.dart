@@ -10,7 +10,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:vtop/Authentication/auth.dart';
 import 'package:vtop/UI/MyAccountPage.dart';
 import 'package:vtop/UI/VtopPage.dart';
-
+import 'package:flutter_icons/flutter_icons.dart';
 class DrawerItem {
   String title;
   IconData icon;
@@ -20,12 +20,12 @@ class DrawerItem {
 
 class ExtendedHome extends StatefulWidget {
   final drawerItems = [
-    new DrawerItem("My Account", Icons.account_circle, Colors.red),
-    new DrawerItem("Activities", Icons.local_activity, Colors.blue),
-    new DrawerItem("VTOP", Icons.open_in_browser, Colors.amber),
-    new DrawerItem("Teacher Database", Icons.dashboard, Colors.green),
-    new DrawerItem("About", Icons.info_outline, Colors.white),
-    new DrawerItem("Logout", Icons.supervised_user_circle, Colors.purple),
+    new DrawerItem("My Account", AntDesign.user, Colors.red),
+    new DrawerItem("Activities", Entypo.star_outlined, Colors.blue),
+    new DrawerItem("VTOP", AntDesign.weibo_circle, Colors.amber),
+    new DrawerItem("Teacher Database", Entypo.database, Colors.green),
+    new DrawerItem("About", Entypo.notification, Colors.white),
+    new DrawerItem("Logout", Entypo.log_out, Colors.purple),
   ];
   @override
   _ExtendedHomeState createState() => _ExtendedHomeState();
@@ -88,7 +88,7 @@ class _ExtendedHomeState extends State<ExtendedHome> {
     auth = FirebaseAuth.instance;
     getCurrentUser();
   }
-
+ 
   getCurrentUser() async {
     user = await auth.currentUser();
     // user.isEmailVerified;
@@ -104,7 +104,8 @@ class _ExtendedHomeState extends State<ExtendedHome> {
     var drawerOptions = <Widget>[];
     for (var i = 0; i < widget.drawerItems.length; i++) {
       var d = widget.drawerItems[i];
-      drawerOptions.add(new ListTile(
+      drawerOptions.add(
+        new ListTile(
         leading: new Icon(
           d.icon,
           color: d.color,

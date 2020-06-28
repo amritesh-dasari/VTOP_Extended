@@ -30,6 +30,8 @@ dependencies:
   curved_drawer: ^0.1.2
   webview_flutter: ^0.3.22+1
   flushbar: ^1.10.2
+  flutter_icons : any
+  flutter_swiper: any
 
   cupertino_icons: ^0.1.2
 
