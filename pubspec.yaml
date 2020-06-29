@@ -32,6 +32,7 @@ dependencies:
   flushbar: ^1.10.2
   flutter_icons : any
   flutter_swiper: any
+  image_picker: any
 
   cupertino_icons: ^0.1.2
 

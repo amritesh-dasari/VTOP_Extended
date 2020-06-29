@@ -20,7 +20,9 @@ public final class GeneratedPluginRegistrant {
     flutterEngine.getPlugins().add(new io.flutter.plugins.firebase.core.FirebaseCorePlugin());
     flutterEngine.getPlugins().add(new io.flutter.plugins.firebase.storage.FirebaseStoragePlugin());
       sanketvekariya.flutter_flexible_toast.FlutterFlexibleToastPlugin.registerWith(shimPluginRegistry.registrarFor("sanketvekariya.flutter_flexible_toast.FlutterFlexibleToastPlugin"));
+      io.flutter.plugins.flutter_plugin_android_lifecycle.FlutterAndroidLifecyclePlugin.registerWith(shimPluginRegistry.registrarFor("io.flutter.plugins.flutter_plugin_android_lifecycle.FlutterAndroidLifecyclePlugin"));
       io.flutter.plugins.googlesignin.GoogleSignInPlugin.registerWith(shimPluginRegistry.registrarFor("io.flutter.plugins.googlesignin.GoogleSignInPlugin"));
+    flutterEngine.getPlugins().add(new io.flutter.plugins.imagepicker.ImagePickerPlugin());
     flutterEngine.getPlugins().add(new io.flutter.plugins.pathprovider.PathProviderPlugin());
     flutterEngine.getPlugins().add(new com.baseflow.permissionhandler.PermissionHandlerPlugin());
     flutterEngine.getPlugins().add(new io.flutter.plugins.share.SharePlugin());
