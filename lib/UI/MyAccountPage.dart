@@ -6,6 +6,7 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:vtop/UI/HomeScreen.dart';
 import 'dart:io';
+
 class MyAccountsPage extends StatefulWidget {
   @override
   _MyAccountsPageState createState() => _MyAccountsPageState();
@@ -13,12 +14,13 @@ class MyAccountsPage extends StatefulWidget {
 
 class _MyAccountsPageState extends State<MyAccountsPage> {
   File _image;
-  Future getImage() async{
+  Future getImage() async {
     final image = await ImagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
       _image = image;
     });
   }
+
   String name;
   String userEmail;
   String displayName;
@@ -28,17 +30,19 @@ class _MyAccountsPageState extends State<MyAccountsPage> {
   TextEditingController _phoneController = new TextEditingController();
   FirebaseAuth _auth = FirebaseAuth.instance;
 
-  updateProfileName() async{
+  updateProfileName() async {
     FirebaseUser user = await _auth.currentUser();
     UserUpdateInfo userUpdateInfo = UserUpdateInfo();
     userUpdateInfo.displayName = name;
   }
+
   updateProfilePicture() async {
     FirebaseUser user = await _auth.currentUser();
     UserUpdateInfo userUpdateInfo = UserUpdateInfo();
     userUpdateInfo.photoUrl = _image.toString();
   }
-  getUserinfo() async{
+
+  getUserinfo() async {
     FirebaseUser user = await _auth.currentUser();
     setState(() {
       displayName = user.displayName;
@@ -46,11 +50,13 @@ class _MyAccountsPageState extends State<MyAccountsPage> {
       userEmail = user.email;
     });
   }
+
   @override
   void initState() {
     super.initState();
     getUserinfo();
   }
+
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -67,14 +73,16 @@ class _MyAccountsPageState extends State<MyAccountsPage> {
                       top: MediaQuery.of(context).size.height * 0.02,
                     ),
                     child: CircleAvatar(
-                      backgroundImage: _image == null ? AssetImage("assets/images/user.png"): FileImage(_image),
+                      backgroundImage: _image == null
+                          ? AssetImage("assets/images/user.png")
+                          : FileImage(_image),
                       maxRadius: 80,
                     )),
                 Container(
                   child: FlatButton(
                     onPressed: () => debugPrint("hello world"),
                     child: Text(
-                      displayName ==  null ? "Set you name" : displayName,
+                      displayName == null ? "Set you name" : displayName,
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
@@ -83,7 +91,7 @@ class _MyAccountsPageState extends State<MyAccountsPage> {
                   child: FlatButton(
                     onPressed: () => debugPrint("hello world"),
                     child: Text(
-                      userEmail == null ? "Email": userEmail,
+                      userEmail == null ? "Email" : userEmail,
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
@@ -208,7 +216,7 @@ class _MyAccountsPageState extends State<MyAccountsPage> {
                             padding: EdgeInsets.all(2.0),
                             child: Container(
                               child: FlatButton(
-                                onPressed: (){
+                                onPressed: () {
                                   getImage();
                                   updateProfilePicture();
                                 },
@@ -226,12 +234,12 @@ class _MyAccountsPageState extends State<MyAccountsPage> {
                               color: Colors.blue,
                               child: FlatButton(
                                 onPressed: () async {
-                                  if(_formKey.currentState.validate()){
-                                    try{
+                                  if (_formKey.currentState.validate()) {
+                                    try {
                                       setState(() {
                                         updateProfileName();
                                       });
-                                    }catch(e){
+                                    } catch (e) {
                                       print(e.toString());
                                     }
                                   }

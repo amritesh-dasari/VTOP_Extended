@@ -11,6 +11,7 @@ import 'package:vtop/Authentication/auth.dart';
 import 'package:vtop/UI/MyAccountPage.dart';
 import 'package:vtop/UI/VtopPage.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+
 class DrawerItem {
   String title;
   IconData icon;
@@ -88,7 +89,7 @@ class _ExtendedHomeState extends State<ExtendedHome> {
     auth = FirebaseAuth.instance;
     getCurrentUser();
   }
- 
+
   getCurrentUser() async {
     user = await auth.currentUser();
     // user.isEmailVerified;
@@ -104,8 +105,7 @@ class _ExtendedHomeState extends State<ExtendedHome> {
     var drawerOptions = <Widget>[];
     for (var i = 0; i < widget.drawerItems.length; i++) {
       var d = widget.drawerItems[i];
-      drawerOptions.add(
-        new ListTile(
+      drawerOptions.add(new ListTile(
         leading: new Icon(
           d.icon,
           color: d.color,
@@ -137,7 +137,9 @@ class _ExtendedHomeState extends State<ExtendedHome> {
               accountName: Text(
                 "Somsubro Banerjee",
               ),
-              accountEmail: Text("somsubro.18BCE7011@vitap.ac.in"),
+              accountEmail: user.email == null
+                  ? Text("Email Not found")
+                  : Text(user.email),
               currentAccountPicture: CircleAvatar(
                   backgroundColor: Colors.white,
                   child: Text("S",
