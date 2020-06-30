@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,10 +19,12 @@ class _MyAccountsPageState extends State<MyAccountsPage> {
     final image = await ImagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
       _image = image;
+      updateProfilePicture();
     });
   }
 
   String name;
+  String email;
   String userEmail;
   String displayName;
   String photoUrl;
@@ -29,32 +32,44 @@ class _MyAccountsPageState extends State<MyAccountsPage> {
   TextEditingController _nameController = new TextEditingController();
   TextEditingController _phoneController = new TextEditingController();
   FirebaseAuth _auth = FirebaseAuth.instance;
+  final Firestore _fireStore = Firestore.instance;
 
-  updateProfileName() async {
+  updateProfileName(name) async {
     FirebaseUser user = await _auth.currentUser();
     UserUpdateInfo userUpdateInfo = UserUpdateInfo();
     userUpdateInfo.displayName = name;
+    Firestore.instance.collection("users").document(user.uid).updateData({"Name" : name}).catchError((e){
+      print(e.toString());
+    });
   }
 
   updateProfilePicture() async {
     FirebaseUser user = await _auth.currentUser();
     UserUpdateInfo userUpdateInfo = UserUpdateInfo();
     userUpdateInfo.photoUrl = _image.toString();
+    Firestore.instance.collection("users").document(user.uid).updateData({"profilePicture" : _image}).catchError((e) {
+      print(e.toString());
+    });
   }
 
-  getUserinfo() async {
+  getNameAndEmail() async {
     FirebaseUser user = await _auth.currentUser();
-    setState(() {
-      displayName = user.displayName;
-      photoUrl = user.photoUrl;
-      userEmail = user.email;
+    Firestore.instance.collection("users").document(user.uid).get().then((value) {
+      name = value.data["Name"];
+      email = value.data["email"];
     });
+    // Firestore.instance.collection("users").getDocuments().then((querySnapshot){
+    //   querySnapshot.documents.forEach((result) {
+    //     print(result.data);
+    //    });
+    // });
+    
   }
 
   @override
   void initState() {
     super.initState();
-    getUserinfo();
+    getNameAndEmail();
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -81,17 +96,14 @@ class _MyAccountsPageState extends State<MyAccountsPage> {
                 Container(
                   child: FlatButton(
                     onPressed: () => debugPrint("hello world"),
-                    child: Text(
-                      displayName == null ? "Set you name" : displayName,
-                      style: TextStyle(color: Colors.white),
-                    ),
+                    child: name == null ? Text("Set you name") : Text(name,style: TextStyle(color: Colors.white),),
                   ),
                 ),
                 Container(
                   child: FlatButton(
                     onPressed: () => debugPrint("hello world"),
                     child: Text(
-                      userEmail == null ? "Email" : userEmail,
+                      email == null ? "Email" : email,
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
@@ -218,7 +230,7 @@ class _MyAccountsPageState extends State<MyAccountsPage> {
                               child: FlatButton(
                                 onPressed: () {
                                   getImage();
-                                  updateProfilePicture();
+                                  // updateProfilePicture();
                                 },
                                 child: Text("Change your profile photo",
                                     style: TextStyle(color: Colors.white)),
@@ -237,7 +249,8 @@ class _MyAccountsPageState extends State<MyAccountsPage> {
                                   if (_formKey.currentState.validate()) {
                                     try {
                                       setState(() {
-                                        updateProfileName();
+                                        // updateProfileName(name);
+                                        getNameAndEmail();
                                       });
                                     } catch (e) {
                                       print(e.toString());
