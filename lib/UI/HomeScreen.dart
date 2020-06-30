@@ -44,7 +44,7 @@ class _ExtendedHomeState extends State<ExtendedHome> {
       style: TextStyle(
           letterSpacing: 6,
           color: Colors.white,
-          fontSize: 20,
+          fontSize: 24,
           fontWeight: FontWeight.bold),
     ),
     new Text("VTOP"),
