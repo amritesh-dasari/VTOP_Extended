@@ -28,10 +28,14 @@ class _MyAccountsPageState extends State<MyAccountsPage> {
   TextEditingController _phoneController = new TextEditingController();
   FirebaseAuth _auth = FirebaseAuth.instance;
 
-  updateProfile() async{
+  updateProfileName() async{
     FirebaseUser user = await _auth.currentUser();
     UserUpdateInfo userUpdateInfo = UserUpdateInfo();
     userUpdateInfo.displayName = name;
+  }
+  updateProfilePicture() async {
+    FirebaseUser user = await _auth.currentUser();
+    UserUpdateInfo userUpdateInfo = UserUpdateInfo();
     userUpdateInfo.photoUrl = _image.toString();
   }
   getUserinfo() async{
@@ -44,9 +48,7 @@ class _MyAccountsPageState extends State<MyAccountsPage> {
   }
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    // updateProfile();
     getUserinfo();
   }
   final _formKey = GlobalKey<FormState>();
@@ -65,7 +67,7 @@ class _MyAccountsPageState extends State<MyAccountsPage> {
                       top: MediaQuery.of(context).size.height * 0.02,
                     ),
                     child: CircleAvatar(
-                      backgroundImage: _image == null ? NetworkImage(""): FileImage(_image),
+                      backgroundImage: _image == null ? AssetImage("assets/images/user.png"): FileImage(_image),
                       maxRadius: 80,
                     )),
                 Container(
@@ -208,7 +210,7 @@ class _MyAccountsPageState extends State<MyAccountsPage> {
                               child: FlatButton(
                                 onPressed: (){
                                   getImage();
-                                  updateProfile();
+                                  updateProfilePicture();
                                 },
                                 child: Text("Change your profile photo",
                                     style: TextStyle(color: Colors.white)),
@@ -227,7 +229,7 @@ class _MyAccountsPageState extends State<MyAccountsPage> {
                                   if(_formKey.currentState.validate()){
                                     try{
                                       setState(() {
-                                        updateProfile();
+                                        updateProfileName();
                                       });
                                     }catch(e){
                                       print(e.toString());

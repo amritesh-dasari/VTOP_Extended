@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -247,7 +248,18 @@ class _SignupScreenState extends State<SignupScreen> {
                       if(_formKey.currentState.validate()){
                         try{
                         showAlertDialog(context);
-                         dynamic result = await _auth.registerWithEmailAndPassword(_email, _cnfPass);
+                         dynamic result = _auth.registerWithEmailAndPassword(_email, _cnfPass).then((currentUser) => Firestore.instance
+                         .collection("users")
+                         .document(currentUser.uid)
+                         .setData(
+                           {
+                             "Name" : null,
+                             "uid" : currentUser.uid,
+                             "email" : emailController.text,
+                             "profilePicture" : null,
+                           }
+                         ).whenComplete(() => print("done !!"))
+                         );
                          Navigator.pop(context);
                          if (result == null) {
                         setState(() {
