@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,7 +24,7 @@ class _MyAccountsPageState extends State<MyAccountsPage> {
       updateProfilePicture();
     });
   }
-
+  Timer timer;
   String name;
   String email;
   String userEmail;
@@ -36,8 +38,16 @@ class _MyAccountsPageState extends State<MyAccountsPage> {
 
   updateProfileName(name) async {
     FirebaseUser user = await _auth.currentUser();
+    user.reload();
     UserUpdateInfo userUpdateInfo = UserUpdateInfo();
     userUpdateInfo.displayName = name;
+    if(user != null)
+    {
+      user.updateProfile(
+        userUpdateInfo
+      );
+    }
+    print(user.displayName);
     Firestore.instance.collection("users").document(user.uid).updateData({"Name" : name}).catchError((e){
       print(e.toString());
     });
@@ -52,24 +62,32 @@ class _MyAccountsPageState extends State<MyAccountsPage> {
     });
   }
 
-  getNameAndEmail() async {
+  getName() async {
     FirebaseUser user = await _auth.currentUser();
-    Firestore.instance.collection("users").document(user.uid).get().then((value) {
-      name = value.data["Name"];
-      email = value.data["email"];
-    });
-    // Firestore.instance.collection("users").getDocuments().then((querySnapshot){
-    //   querySnapshot.documents.forEach((result) {
-    //     print(result.data);
-    //    });
-    // });
-    
+    displayName = user.displayName;  
+  }
+
+  getEmail() async{
+    FirebaseUser user = await _auth.currentUser();
+    email = user.email;
   }
 
   @override
   void initState() {
     super.initState();
-    getNameAndEmail();
+    getName();
+    getEmail();
+    timer = Timer.periodic(Duration(seconds : 1), (timer) async{
+      this.setState(() {
+        getEmail();
+        getName();
+      });
+     });
+  }
+  @override
+  void dispose(){
+    super.dispose();
+    timer.cancel();
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -96,14 +114,8 @@ class _MyAccountsPageState extends State<MyAccountsPage> {
                 Container(
                   child: FlatButton(
                     onPressed: () => debugPrint("hello world"),
-                    child: name == null ? Text("Set you name") : Text(name,style: TextStyle(color: Colors.white),),
-                  ),
-                ),
-                Container(
-                  child: FlatButton(
-                    onPressed: () => debugPrint("hello world"),
                     child: Text(
-                      email == null ? "Email" : email,
+                      displayName == null ? "" : displayName,
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
@@ -112,7 +124,7 @@ class _MyAccountsPageState extends State<MyAccountsPage> {
                   child: FlatButton(
                     onPressed: () => debugPrint("hello world"),
                     child: Text(
-                      "+91 1234567890",
+                      email == null ? "" : email,
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
@@ -137,6 +149,8 @@ class _MyAccountsPageState extends State<MyAccountsPage> {
                                 primaryColorDark: Colors.grey,
                               ),
                               child: TextFormField(
+                                
+                                // onFieldSubmitted: ,
                                 onSaved: (value) => name = value.trim(),
                                 onChanged: (val) {
                                   setState(() => name = val);
@@ -200,7 +214,12 @@ class _MyAccountsPageState extends State<MyAccountsPage> {
                                 controller: _phoneController,
                                 cursorColor: Colors.blue,
                                 decoration: InputDecoration(
-                                  prefix: Text("+91 "),
+                                  disabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color:Colors.grey,
+                                    )
+                                  ),
+                                  // prefix: Text("+91 "),
                                   enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                     color: Colors.white,
@@ -211,12 +230,14 @@ class _MyAccountsPageState extends State<MyAccountsPage> {
                                       borderSide:
                                           BorderSide(color: Colors.white)),
                                   icon:
-                                      Icon(Feather.phone, color: Colors.white),
-                                  helperText: "* Optional",
+                                      Icon(Entypo.email, color: Colors.white),
+                                  enabled:false,
+                                  hoverColor: Colors.white,
+                                  helperText: "* you cannot change this",
                                   hintStyle: TextStyle(color: Colors.white),
                                   helperStyle: TextStyle(color: Colors.red),
-                                  labelText: "Phone Number",
-                                  labelStyle: TextStyle(color: Colors.white),
+                                  labelText: email,
+                                  labelStyle: TextStyle(color: Colors.grey),
                                 ),
                               ),
                             ),
@@ -249,8 +270,9 @@ class _MyAccountsPageState extends State<MyAccountsPage> {
                                   if (_formKey.currentState.validate()) {
                                     try {
                                       setState(() {
-                                        // updateProfileName(name);
-                                        getNameAndEmail();
+                                        updateProfileName(name); 
+                                        _formKey.currentState.reset();
+                                        _nameController.clear();
                                       });
                                     } catch (e) {
                                       print(e.toString());

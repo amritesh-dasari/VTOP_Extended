@@ -94,7 +94,9 @@ class _ExtendedHomeState extends State<ExtendedHome> {
     user = await auth.currentUser();
     // user.isEmailVerified;
     // print("Hello " + user.email.toString());
-    setState(() {});
+    setState(() {
+      email = user.email;
+    });
   }
 
   final backgroundColor = Color(0xFF2c2c2c);
@@ -137,7 +139,7 @@ class _ExtendedHomeState extends State<ExtendedHome> {
               accountName: Text(
                 "Somsubro Banerjee",
               ),
-              accountEmail: user.email == null
+              accountEmail: email == null
                   ? Text("Email Not found")
                   : Text(user.email),
               currentAccountPicture: CircleAvatar(
