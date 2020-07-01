@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,6 +18,36 @@ class MyAccountsPage extends StatefulWidget {
 }
 
 class _MyAccountsPageState extends State<MyAccountsPage> {
+    showAlertDialog(BuildContext context) {
+    AlertDialog alert = AlertDialog(
+      backgroundColor: Colors.black,
+      content: new Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CircularProgressIndicator(),
+          ),
+          SizedBox(width: 20),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+                margin: EdgeInsets.only(left: 5),
+                child: Text(
+                  "Loading",
+                  style: TextStyle(color: Colors.white),
+                )),
+          ),
+        ],
+      ),
+    );
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
   File _image;
   Future getImage() async {
     final image = await ImagePicker.pickImage(source: ImageSource.gallery);
@@ -30,6 +62,7 @@ class _MyAccountsPageState extends State<MyAccountsPage> {
   String userEmail;
   String displayName;
   String photoUrl;
+  String profilePic;
   String phoneNumber;
   TextEditingController _nameController = new TextEditingController();
   TextEditingController _phoneController = new TextEditingController();
@@ -56,15 +89,34 @@ class _MyAccountsPageState extends State<MyAccountsPage> {
   updateProfilePicture() async {
     FirebaseUser user = await _auth.currentUser();
     UserUpdateInfo userUpdateInfo = UserUpdateInfo();
-    userUpdateInfo.photoUrl = _image.toString();
-    Firestore.instance.collection("users").document(user.uid).updateData({"profilePicture" : _image}).catchError((e) {
+    
+    StorageReference storageRefrence = FirebaseStorage.instance.ref()
+    .child("Profile pictures/${user.displayName}/${user.uid}/${_image.path}");
+    StorageUploadTask storageUploadTask = storageRefrence.putFile(_image);
+    await storageUploadTask.onComplete;
+    print('file uploaded');
+    storageRefrence.getDownloadURL().then((url) {
+      Firestore.instance.collection("users").document(user.uid).updateData({"profilePic" : url}).catchError((e){
       print(e.toString());
     });
+      setState(() {
+         userUpdateInfo.photoUrl = url;
+        if(user != null){
+        user.updateProfile(userUpdateInfo);
+    }
+      });
+    });
+   
   }
 
   getName() async {
     FirebaseUser user = await _auth.currentUser();
     displayName = user.displayName;  
+  }
+
+  getPhoto() async {
+    FirebaseUser user = await _auth.currentUser();
+    profilePic = user.photoUrl;
   }
 
   getEmail() async{
@@ -79,8 +131,11 @@ class _MyAccountsPageState extends State<MyAccountsPage> {
     getEmail();
     timer = Timer.periodic(Duration(seconds : 1), (timer) async{
       this.setState(() {
+        showAlertDialog(context);
+        Navigator.pop(context);
         getEmail();
         getName();
+        getPhoto();
       });
      });
   }
@@ -106,9 +161,9 @@ class _MyAccountsPageState extends State<MyAccountsPage> {
                       top: MediaQuery.of(context).size.height * 0.02,
                     ),
                     child: CircleAvatar(
-                      backgroundImage: _image == null
+                      backgroundImage: profilePic == null
                           ? AssetImage("assets/images/user.png")
-                          : FileImage(_image),
+                          : NetworkImage(profilePic,),
                       maxRadius: 80,
                     )),
                 Container(
@@ -130,7 +185,7 @@ class _MyAccountsPageState extends State<MyAccountsPage> {
                   ),
                 ),
                 SizedBox(
-                  height: 40,
+                  height: 20,
                 ),
                 Container(
                   decoration:
@@ -250,6 +305,8 @@ class _MyAccountsPageState extends State<MyAccountsPage> {
                             child: Container(
                               child: FlatButton(
                                 onPressed: () {
+                                  showAlertDialog(context);
+                                  Navigator.pop(context);
                                   getImage();
                                   // updateProfilePicture();
                                 },
@@ -270,6 +327,8 @@ class _MyAccountsPageState extends State<MyAccountsPage> {
                                   if (_formKey.currentState.validate()) {
                                     try {
                                       setState(() {
+                                        showAlertDialog(context);
+                                        Navigator.pop(context);
                                         updateProfileName(name); 
                                         _formKey.currentState.reset();
                                         _nameController.clear();

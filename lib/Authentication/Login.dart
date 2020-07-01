@@ -265,7 +265,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     blurRadius: 8.0)
                               ],
                               margin:
-                                  EdgeInsets.only(bottom: 8, left: 8, right: 8),
+                              EdgeInsets.only(bottom: 8, left: 8, right: 8),
                               isDismissible: true,
                               duration: Duration(seconds: 10),
                               icon: Icon(
