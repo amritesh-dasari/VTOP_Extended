@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:curved_drawer/curved_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -79,6 +81,7 @@ class _ExtendedHomeState extends State<ExtendedHome> {
   String name;
   String email;
   String imageUrl;
+  Timer timer;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   FirebaseUser user;
   FirebaseAuth auth;
@@ -88,6 +91,11 @@ class _ExtendedHomeState extends State<ExtendedHome> {
     super.initState();
     auth = FirebaseAuth.instance;
     getCurrentUser();
+    timer = Timer.periodic(Duration(seconds: 1), (timer) async{ 
+    this.setState(() {
+      getCurrentUser();
+    });
+    });
   }
 
   getCurrentUser() async {
@@ -96,6 +104,8 @@ class _ExtendedHomeState extends State<ExtendedHome> {
     // print("Hello " + user.email.toString());
     setState(() {
       email = user.email;
+      name = user.displayName;
+      imageUrl = user.photoUrl;
     });
   }
 
@@ -136,16 +146,22 @@ class _ExtendedHomeState extends State<ExtendedHome> {
                   borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(25),
                       bottomRight: Radius.circular(25))),
-              accountName: Text(
-                "Somsubro Banerjee",
-              ),
+              accountName: name == null 
+                  ? Text("")
+                  : Text(user.displayName),
               accountEmail: email == null
                   ? Text("Email Not found")
                   : Text(user.email),
               currentAccountPicture: CircleAvatar(
+                backgroundImage: imageUrl == null 
+                  ? AssetImage('assets/images/user.png')
+                  : NetworkImage(user.photoUrl),
                   backgroundColor: Colors.white,
-                  child: Text("S",
-                      style: TextStyle(fontSize: 30, color: Colors.black))),
+                  child: imageUrl == null
+                  ?Text(user.email[0],
+                      style: TextStyle(fontSize: 30, color: Colors.black)
+                      ): Text("")
+                      ),
             ),
             new Column(children: drawerOptions)
           ],

@@ -20,25 +20,36 @@ class MyAccountsPage extends StatefulWidget {
 class _MyAccountsPageState extends State<MyAccountsPage> {
     showAlertDialog(BuildContext context) {
     AlertDialog alert = AlertDialog(
-      backgroundColor: Colors.black,
-      content: new Row(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CircularProgressIndicator(),
-          ),
-          SizedBox(width: 20),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-                margin: EdgeInsets.only(left: 5),
-                child: Text(
-                  "Loading",
-                  style: TextStyle(color: Colors.white),
-                )),
-          ),
-        ],
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      backgroundColor: Colors.grey.shade900,
+      content: Container(
+        child: Text("Where do you want to pick your image from ?", style: TextStyle(color: Colors.white),),
       ),
+      elevation: 20,
+      
+      actions: [
+        FlatButton(
+                  child: Text("Gallery",style: TextStyle(color: Colors.blue),),
+                  onPressed: (){
+                    Navigator.pop(context);
+                    getImageFromGallery();
+                  },
+                  
+                ),
+                FlatButton(
+                  child: Text("Camera",style: TextStyle(color: Colors.blue),),
+                  onPressed: (){
+                    Navigator.pop(context);
+                    getImageFromCamera();
+                  },
+                ),
+                 FlatButton(
+                  child: Text("Cancel",style: TextStyle(color: Colors.blue),),
+                  onPressed: (){
+                    Navigator.pop(context);
+                  },
+                ),
+      ],
     );
     showDialog(
       barrierDismissible: false,
@@ -49,8 +60,15 @@ class _MyAccountsPageState extends State<MyAccountsPage> {
     );
   }
   File _image;
-  Future getImage() async {
+  Future getImageFromGallery() async {
     final image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _image = image;
+      updateProfilePicture();
+    });
+  }
+  Future getImageFromCamera() async {
+    final image = await ImagePicker.pickImage(source: ImageSource.camera);
     setState(() {
       _image = image;
       updateProfilePicture();
@@ -220,7 +238,7 @@ class _MyAccountsPageState extends State<MyAccountsPage> {
                                 cursorColor: Colors.blue,
                                 validator: (value) {
                                   if (value.isEmpty) {
-                                    return "Dont't you have a Name!!??";
+                                    return "Don't you have a Name!!??";
                                   } else
                                     return null;
                                 },
@@ -306,8 +324,8 @@ class _MyAccountsPageState extends State<MyAccountsPage> {
                               child: FlatButton(
                                 onPressed: () {
                                   showAlertDialog(context);
-                                  Navigator.pop(context);
-                                  getImage();
+                                  // Navigator.pop(context);
+//                                  getImage();
                                   // updateProfilePicture();
                                 },
                                 child: Text("Change your profile photo",
