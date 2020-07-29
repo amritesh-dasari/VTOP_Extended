@@ -63,6 +63,8 @@ class _ExtendedHomeState extends State<ExtendedHome> {
         return new Activities();
       case 2:
         return new VtopPage();
+      case 5:
+        return auth.signOut();
 
       default:
         return Center(
@@ -77,6 +79,7 @@ class _ExtendedHomeState extends State<ExtendedHome> {
     setState(() => _selectedDrawerIndex = index);
     Navigator.of(context).pop(); // close the drawer
   }
+
   String name;
   String email;
   String imageUrl;
@@ -88,12 +91,13 @@ class _ExtendedHomeState extends State<ExtendedHome> {
   void initState() {
     super.initState();
     auth = FirebaseAuth.instance;
-    timer = Timer.periodic(Duration(seconds: 1), (timer) async{ 
-    this.setState(() {
-      getCurrentUser();
-    });
+    timer = Timer.periodic(Duration(seconds: 1), (timer) async {
+      this.setState(() {
+        getCurrentUser();
+      });
     });
   }
+
   getCurrentUser() async {
     user = await auth.currentUser();
     setState(() {
@@ -102,6 +106,7 @@ class _ExtendedHomeState extends State<ExtendedHome> {
       imageUrl = user.photoUrl;
     });
   }
+
   final backgroundColor = Color(0xFF2c2c2c);
   final firstTabColor = Color(0xFF1d1d1d);
   final drawerColor = Color(0xFF545353);
@@ -138,17 +143,14 @@ class _ExtendedHomeState extends State<ExtendedHome> {
                   borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(25),
                       bottomRight: Radius.circular(25))),
-              accountName: name == null 
-                  ? Text("")
-                  : Text(user.displayName),
-              accountEmail: email == null
-                  ? Text("Email Not found")
-                  : Text(user.email),
+              accountName: name == null ? Text("") : Text(user.displayName),
+              accountEmail:
+                  email == null ? Text("Email Not found") : Text(user.email),
               currentAccountPicture: CircleAvatar(
-                backgroundImage: imageUrl == null 
-                  ? AssetImage('assets/images/user.png')
-                  : NetworkImage(user.photoUrl),
-                  backgroundColor: Colors.white,
+                backgroundImage: imageUrl == null
+                    ? AssetImage('assets/images/user.png')
+                    : NetworkImage(user.photoUrl),
+                backgroundColor: Colors.white,
               ),
             ),
             new Column(children: drawerOptions)
