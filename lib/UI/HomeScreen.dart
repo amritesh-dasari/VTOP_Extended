@@ -77,7 +77,6 @@ class _ExtendedHomeState extends State<ExtendedHome> {
     setState(() => _selectedDrawerIndex = index);
     Navigator.of(context).pop(); // close the drawer
   }
-
   String name;
   String email;
   String imageUrl;
@@ -85,30 +84,24 @@ class _ExtendedHomeState extends State<ExtendedHome> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   FirebaseUser user;
   FirebaseAuth auth;
-
   @override
   void initState() {
     super.initState();
     auth = FirebaseAuth.instance;
-    getCurrentUser();
     timer = Timer.periodic(Duration(seconds: 1), (timer) async{ 
     this.setState(() {
       getCurrentUser();
     });
     });
   }
-
   getCurrentUser() async {
     user = await auth.currentUser();
-    // user.isEmailVerified;
-    // print("Hello " + user.email.toString());
     setState(() {
       email = user.email;
       name = user.displayName;
       imageUrl = user.photoUrl;
     });
   }
-
   final backgroundColor = Color(0xFF2c2c2c);
   final firstTabColor = Color(0xFF1d1d1d);
   final drawerColor = Color(0xFF545353);
@@ -130,7 +123,6 @@ class _ExtendedHomeState extends State<ExtendedHome> {
         onTap: () => _onSelectItem(i),
       ));
     }
-
     return new Scaffold(
       appBar: new AppBar(
         backgroundColor: backgroundColor,
@@ -157,11 +149,7 @@ class _ExtendedHomeState extends State<ExtendedHome> {
                   ? AssetImage('assets/images/user.png')
                   : NetworkImage(user.photoUrl),
                   backgroundColor: Colors.white,
-                  child: imageUrl == null
-                  ?Text(user.email[0],
-                      style: TextStyle(fontSize: 30, color: Colors.black)
-                      ): Text("")
-                      ),
+              ),
             ),
             new Column(children: drawerOptions)
           ],

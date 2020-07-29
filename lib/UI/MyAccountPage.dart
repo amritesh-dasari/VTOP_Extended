@@ -20,13 +20,13 @@ class MyAccountsPage extends StatefulWidget {
 class _MyAccountsPageState extends State<MyAccountsPage> {
     showAlertDialog(BuildContext context) {
     AlertDialog alert = AlertDialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       backgroundColor: Colors.grey.shade900,
       content: Container(
         child: Text("Where do you want to pick your image from ?", style: TextStyle(color: Colors.white),),
       ),
       elevation: 20,
-      
+
       actions: [
         FlatButton(
                   child: Text("Gallery",style: TextStyle(color: Colors.blue),),
