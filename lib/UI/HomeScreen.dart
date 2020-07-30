@@ -54,7 +54,7 @@ class DrawerItem {
 class ExtendedHome extends StatefulWidget {
   final drawerItems = [
     new DrawerItem("My Account", AntDesign.user, Colors.red),
-    new DrawerItem("Activities", Entypo.star_outlined, Colors.blue),
+    new DrawerItem("Events & Clubs", Entypo.star_outlined, Colors.blue),
     new DrawerItem("VTOP", AntDesign.weibo_circle, Colors.amber),
     new DrawerItem("Teacher Database", Entypo.database, Colors.green),
     new DrawerItem("About", Entypo.notification, Colors.white),

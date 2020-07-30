@@ -31,14 +31,14 @@ class _ActivitiesState extends State<Activities> {
               Tab(
                 child: Container(
                     child: Text(
-                  "ACTIVITIES",
+                  "EVENTS",
                   style: TextStyle(letterSpacing: 1.5, fontSize: 16),
                 )),
               ),
               Tab(
                 child: Container(
                     child: Text(
-                  "DISCOVER",
+                  "CLUBS",
                   style: TextStyle(letterSpacing: 1.5, fontSize: 16),
                 )),
               ),
