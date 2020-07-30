@@ -21,6 +21,36 @@ class DrawerItem {
   DrawerItem(this.title, this.icon, this.color);
 }
 
+  showAlertDialog(BuildContext context) {
+    AlertDialog alert = AlertDialog(
+      backgroundColor: Colors.black,
+      content: new Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CircularProgressIndicator(),
+          ),
+          SizedBox(width: 20),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+                margin: EdgeInsets.only(left: 5),
+                child: Text(
+                  "Loading",
+                  style: TextStyle(color: Colors.white),
+                )),
+          ),
+        ],
+      ),
+    );
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 class ExtendedHome extends StatefulWidget {
   final drawerItems = [
     new DrawerItem("My Account", AntDesign.user, Colors.red),
@@ -64,7 +94,7 @@ class _ExtendedHomeState extends State<ExtendedHome> {
       case 2:
         return new VtopPage();
       case 5:
-        return auth.signOut();
+        return userLogout();
 
       default:
         return Center(
@@ -97,14 +127,20 @@ class _ExtendedHomeState extends State<ExtendedHome> {
       });
     });
   }
-
+  @override
+  void dispose(){
+    super.dispose();
+    timer.cancel();
+  }
   getCurrentUser() async {
     user = await auth.currentUser();
-    setState(() {
       email = user.email;
       name = user.displayName;
       imageUrl = user.photoUrl;
-    });
+  }
+  userLogout(){
+    auth.signOut();
+    dispose();
   }
 
   final backgroundColor = Color(0xFF2c2c2c);

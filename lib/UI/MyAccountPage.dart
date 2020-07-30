@@ -337,7 +337,7 @@ class _MyAccountsPageState extends State<MyAccountsPage> {
                             height: 20,
                           ),
                           Padding(
-                            padding: EdgeInsets.all(2.0),
+                            padding: EdgeInsets.all(3.0),
                             child: Container(
                               color: Colors.blue,
                               child: FlatButton(
