@@ -63,6 +63,12 @@ Future<String> signInWithGoogle() async {
   }
 
   //register with email and password
+  Future<String> signUp(String email, String password) async {
+    AuthResult result = await _auth.createUserWithEmailAndPassword(
+        email: email, password: password);
+    FirebaseUser user = result.user;
+    return user.uid;
+  }
   Future registerWithEmailAndPassword(String email, String password) async {
     try {
       AuthResult result = await _auth.createUserWithEmailAndPassword(

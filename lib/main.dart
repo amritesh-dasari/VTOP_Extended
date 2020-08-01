@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vtop/Authentication/auth.dart';
+import 'package:vtop/Authentication/authen.dart';
+import 'package:vtop/Authentication/root_page.dart';
 import 'package:vtop/UI/HomeScreen.dart';
 import 'package:vtop/UI/SplashScreen.dart';
 import 'Authentication/user.dart';
@@ -24,6 +26,7 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (context) => SplashScr(),
         },
+        // home: new RootPage(auth: new Auth()),
       ),
     );
   }

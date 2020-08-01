@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:vtop/Authentication/Login.dart';
-import 'package:vtop/Authentication/Signup.dart';
+import 'package:vtop/Authentication/login_signup_page.dart';
+
 
 class ForgotPassword extends StatefulWidget {
   @override
@@ -128,7 +128,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   color: Colors.blue,
                   onPressed: () {
                     resetPassword(_email).whenComplete(() =>  setState(() {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginSignupPage()));
                       String errorMsg = "Password reset link sent to email id please check";
                       showDialog(
                         context: context,
@@ -168,7 +168,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       TextSpan(
                         recognizer: TapGestureRecognizer()..onTap = () {
                           Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => LoginScreen()));
+                            MaterialPageRoute(builder: (context) => LoginSignupPage()));
                         },
                         text: 'Login',
                         style: TextStyle(

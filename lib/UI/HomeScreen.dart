@@ -6,10 +6,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:firebase_auth/firebase_auth.dart";
 import 'package:random_color/random_color.dart';
+import 'package:vtop/Authentication/authen.dart';
 import 'Activities.dart';
 import 'dart:ui';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:vtop/Authentication/auth.dart';
 import 'package:vtop/UI/MyAccountPage.dart';
 import 'package:vtop/UI/VtopPage.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -21,37 +21,44 @@ class DrawerItem {
   DrawerItem(this.title, this.icon, this.color);
 }
 
-  showAlertDialog(BuildContext context) {
-    AlertDialog alert = AlertDialog(
-      backgroundColor: Colors.black,
-      content: new Row(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CircularProgressIndicator(),
-          ),
-          SizedBox(width: 20),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-                margin: EdgeInsets.only(left: 5),
-                child: Text(
-                  "Loading",
-                  style: TextStyle(color: Colors.white),
-                )),
-          ),
-        ],
-      ),
-    );
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
+showAlertDialog(BuildContext context) {
+  AlertDialog alert = AlertDialog(
+    backgroundColor: Colors.black,
+    content: new Row(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: CircularProgressIndicator(),
+        ),
+        SizedBox(width: 20),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+              margin: EdgeInsets.only(left: 5),
+              child: Text(
+                "Loading",
+                style: TextStyle(color: Colors.white),
+              )),
+        ),
+      ],
+    ),
+  );
+  showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
 class ExtendedHome extends StatefulWidget {
+  ExtendedHome({Key key, this.auth, this.userId, this.logoutCallback})
+      : super(key: key);
+  final BaseAuth auth;
+  final VoidCallback logoutCallback;
+  final String userId;
+
   final drawerItems = [
     new DrawerItem("My Account", AntDesign.user, Colors.red),
     new DrawerItem("Events & Clubs", Entypo.star_outlined, Colors.blue),
@@ -84,6 +91,68 @@ class _ExtendedHomeState extends State<ExtendedHome> {
     new Text("About the App"),
     new Text("Logout")
   ];
+  bool _isEmailVerified = false;
+  void _checkEmailVerification() async {
+    _isEmailVerified = await widget.auth.isEmailVerified();
+    if (!_isEmailVerified) {
+      _showVerifyEmailDialog();
+    }
+  }
+
+  void _resentVerifyEmail() {
+    widget.auth.sendEmailVerification();
+    _showVerifyEmailSentDialog();
+  }
+
+  void _showVerifyEmailDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Verify your account"),
+          content: new Text("Please verify account in the link sent to email"),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("Resent link"),
+              onPressed: () {
+                Navigator.of(context).pop();
+                _resentVerifyEmail();
+              },
+            ),
+            new FlatButton(
+              child: new Text("Dismiss"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showVerifyEmailSentDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Verify your account"),
+          content:
+              new Text("Link to verify account has been sent to your email"),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("Dismiss"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   _getDrawerItemWidget(int pos) {
     switch (pos) {
@@ -94,8 +163,7 @@ class _ExtendedHomeState extends State<ExtendedHome> {
       case 2:
         return new VtopPage();
       case 5:
-        return userLogout();
-
+        return signOut();
       default:
         return Center(
             child: new Text(
@@ -126,21 +194,32 @@ class _ExtendedHomeState extends State<ExtendedHome> {
         getCurrentUser();
       });
     });
+    _checkEmailVerification();
   }
+
   @override
-  void dispose(){
+  void dispose() {
     super.dispose();
     timer.cancel();
   }
+
   getCurrentUser() async {
     user = await auth.currentUser();
-      email = user.email;
-      name = user.displayName;
-      imageUrl = user.photoUrl;
+    email = user.email;
+    name = user.displayName;
+    imageUrl = user.photoUrl;
   }
-  userLogout(){
-    auth.signOut();
-    dispose();
+
+  
+
+  signOut() async {
+    try {
+      await widget.auth.signOut();
+      dispose();
+      widget.logoutCallback();
+    } catch (e) {
+      print(e);
+    }
   }
 
   final backgroundColor = Color(0xFF2c2c2c);
