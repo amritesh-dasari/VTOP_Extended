@@ -265,7 +265,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   Widget showUserInput() {
     return Container(
       margin: EdgeInsets.only(
-          top: MediaQuery.of(context).size.height * 0.22,
+          top: MediaQuery.of(context).size.height * 0.25,
           left: MediaQuery.of(context).size.width * 0.05,
           right: MediaQuery.of(context).size.width * 0.05),
       child: TextFormField(
@@ -289,7 +289,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
               borderSide: const BorderSide(color: Colors.white, width: 1.75),
             ),
             prefixIcon: Icon(
-              Icons.email,
+              Icons.person,
               color: Colors.white,
               size: 25,
             ),
@@ -304,7 +304,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   Widget showEmailInput() {
     return Container(
       margin: EdgeInsets.only(
-          top: MediaQuery.of(context).size.height * 0.34,
+          top: MediaQuery.of(context).size.height * 0.36,
           left: MediaQuery.of(context).size.width * 0.05,
           right: MediaQuery.of(context).size.width * 0.05),
       child: TextFormField(
@@ -351,7 +351,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   Widget showPasswordInput() {
     return Container(
       margin: EdgeInsets.only(
-          top: MediaQuery.of(context).size.height * 0.45,
+          top: MediaQuery.of(context).size.height * 0.47,
           left: MediaQuery.of(context).size.width * 0.05,
           right: MediaQuery.of(context).size.width * 0.05),
       child: TextFormField(
