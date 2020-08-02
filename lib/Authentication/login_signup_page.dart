@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:vtop/Authentication/authen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,6 +21,7 @@ class LoginSignupPage extends StatefulWidget {
 
   final BaseAuth auth;
   final VoidCallback loginCallback;
+  final Firestore _fireStore = Firestore.instance;
 
   @override
   State<StatefulWidget> createState() => new _LoginSignupPageState();
@@ -32,13 +34,13 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   final GlobalKey<ScaffoldState> _globalKey = new GlobalKey<ScaffoldState>();
   final TextEditingController cnfPasswordController =
       new TextEditingController();
-
+  final TextEditingController nameController = new TextEditingController();
   String _user;
   String _email;
   String _password;
   String _confPass;
   String _errorMessage;
-
+  String name;
   bool _isLoginForm;
   bool _isLoading;
 
@@ -98,6 +100,9 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         } else {
           userId = await widget.auth.signUp(_email, _password);
           widget.auth.sendEmailVerification();
+          updateDb();
+          updateProfileName(nameController.text);
+          print(nameController.text);
           _showVerifyEmailSentDialog();
           print('Signed up user: $userId');
         }
@@ -125,6 +130,18 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     _isLoading = false;
     _isLoginForm = true;
     super.initState();
+  }
+
+  updateDb() async {
+    dynamic result = await widget.auth.getCurrentUser();
+    if (result != null) {
+      Firestore.instance.collection('users').document(result.uid).setData({
+        "Name": nameController.text,
+        "uid": result.uid,
+        "email": emailController.text,
+        "profilePicture": null,
+      }).whenComplete(() => print("updated successfully !!"));
+    }
   }
 
   void resetForm() {
@@ -191,15 +208,38 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     );
   }
 
+  updateProfileName(name) async {
+    FirebaseAuth _auth;
+    FirebaseUser user = await _auth.currentUser();
+    user.reload();
+    UserUpdateInfo userUpdateInfo = UserUpdateInfo();
+    userUpdateInfo.displayName = name;
+    if (user != null) {
+      user.updateProfile(userUpdateInfo);
+    }
+    print(user.displayName);
+    Firestore.instance
+        .collection("users")
+        .document(user.uid)
+        .updateData({"Name": name}).catchError((e) {
+      print(e.toString());
+    });
+  }
+
   void _showVerifyEmailSentDialog() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text("Verify your account"),
-          content:
-              new Text("Link to verify account has been sent to your email"),
+          backgroundColor: Colors.black,
+          title: new Text(
+            "Verify your account",
+            style: TextStyle(color: Colors.white),
+          ),
+          content: new Text(
+              "Link to verify account has been sent to your email",
+              style: TextStyle(color: Colors.white)),
           actions: <Widget>[
             new FlatButton(
               child: new Text("Dismiss"),
@@ -270,10 +310,9 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           right: MediaQuery.of(context).size.width * 0.05),
       child: TextFormField(
         autocorrect: true,
-        controller: emailController,
+        controller: nameController,
         keyboardType: TextInputType.text,
-        validator: (value) {},
-        onSaved: (value) => _user = value.trim(),
+        onSaved: (value) => name = value.trim(),
         obscureText: false,
         autofocus: false,
         style: TextStyle(color: Colors.white),
@@ -293,9 +332,9 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
               color: Colors.white,
               size: 25,
             ),
-            hintText: "Enter your username",
+            hintText: "Enter your Name",
             hintStyle: TextStyle(color: Colors.white, fontSize: 15),
-            labelText: "UserName",
+            labelText: "Full Name",
             labelStyle: TextStyle(color: Colors.white, fontSize: 18)),
       ),
     );

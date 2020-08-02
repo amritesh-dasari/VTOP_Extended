@@ -80,6 +80,10 @@ Future<String> signInWithGoogle() async {
       return null;
     }
   }
+ Future<void> sendEmailVerification() async {
+    FirebaseUser user = await _auth.currentUser();
+    user.sendEmailVerification();
+  }
 
   //sign out
   Future signOut() async {
