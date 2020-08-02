@@ -189,11 +189,7 @@ class _ExtendedHomeState extends State<ExtendedHome> {
   void initState() {
     super.initState();
     auth = FirebaseAuth.instance;
-    timer = Timer.periodic(Duration(seconds: 1), (timer) async {
-      this.setState(() {
-        getCurrentUser();
-      });
-    });
+    getCurrentUser();
     _checkEmailVerification();
   }
 

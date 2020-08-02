@@ -543,7 +543,55 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                   right: MediaQuery.of(context).size.width * 0.05),
               child: RaisedButton(
                 color: Colors.pink,
-                onPressed: validateAndSubmit,
+                onPressed: () async {
+                    if (_formKey.currentState.validate()) {
+                      try {
+                        validateAndSubmit();
+                        Navigator.pop(context);
+                        dynamic result = widget.auth.getCurrentUser();
+                        if (result == null) {
+                          setState(() {
+                            Flushbar(
+                              borderRadius: 8.0,
+                              title: "Invalid Password/Email",
+                              message:
+                                  "Please enter correct Email and Password",
+                              flushbarPosition: FlushbarPosition.BOTTOM,
+                              flushbarStyle: FlushbarStyle.FLOATING,
+                              reverseAnimationCurve: Curves.decelerate,
+                              forwardAnimationCurve: Curves.bounceIn,
+                              backgroundColor: Colors.black,
+                              mainButton: FlatButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(
+                                    "OK",
+                                    style: TextStyle(color: Colors.white),
+                                  )),
+                              boxShadows: [
+                                BoxShadow(
+                                    color: Colors.blue[800],
+                                    offset: Offset(0.0, 5.0),
+                                    blurRadius: 8.0)
+                              ],
+                              margin:
+                              EdgeInsets.only(bottom: 8, left: 8, right: 8),
+                              isDismissible: true,
+                              duration: Duration(seconds: 5),
+                              icon: Icon(
+                                Icons.error_outline,
+                                color: Colors.white,
+                              ),
+                            )..show(context);
+                          });
+                        }
+                      } catch (e) {
+                        var errorr = e.toString();
+                        print(errorr);
+                      }
+                    }
+                  },
                 child: new Text(
                   'LOGIN',
                   style: TextStyle(
