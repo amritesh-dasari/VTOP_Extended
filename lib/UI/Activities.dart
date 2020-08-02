@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -54,14 +55,6 @@ class _ActivitiesState extends State<Activities> {
   }
 }
 
-List<StaggeredTile> _staggeredTiles = const <StaggeredTile>[
-  const StaggeredTile.count(8, 4),
-  const StaggeredTile.count(4, 4),
-  const StaggeredTile.count(4, 6),
-  const StaggeredTile.count(4, 6),
-  const StaggeredTile.count(4, 4),
-];
-
 class FirstScreen extends StatelessWidget {
   final firstTabColor = Color(0xFF1d1d1d);
   @override
@@ -69,199 +62,139 @@ class FirstScreen extends StatelessWidget {
     return Scaffold(
         backgroundColor: firstTabColor,
         body: Padding(
-          padding: EdgeInsets.only(top: 12.0),
-          child: StaggeredGridView.count(
-            crossAxisCount: 8,
-            staggeredTiles: _staggeredTiles,
-            mainAxisSpacing: 10.0,
-            crossAxisSpacing: 10.0,
-            padding: EdgeInsets.all(20.0),
-            children: <Widget>[
-              Container(
-                child: Ink(
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            width: 1.0,
-                            color: Colors.grey.shade700,
-                            style: BorderStyle.solid),
-                        borderRadius: BorderRadius.circular(20),
-                        image: DecorationImage(
-                            image: NetworkImage(
-                                'https://images.pexels.com/photos/3792581/pexels-photo-3792581.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500'),
-                            fit: BoxFit.cover)),
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
-                          child: InkWell(
-                              borderRadius: BorderRadius.circular(22),
-                              onTap: () {},
-                              child: Stack(children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.only(top: 120, left: 15),
-                                  child: Text(
-                                    "Event 1",
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white),
-                                  ),
-                                )
-                              ])),
-                        ))),
-              ),
-              Container(
-                child: Ink(
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            width: 1.0,
-                            color: Colors.grey.shade700,
-                            style: BorderStyle.solid),
-                        borderRadius: BorderRadius.circular(20),
-                        image: DecorationImage(
-                            image: NetworkImage(
-                                'https://images.pexels.com/photos/3667816/pexels-photo-3667816.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500'),
-                            fit: BoxFit.cover)),
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
-                          child: InkWell(
-                              borderRadius: BorderRadius.circular(22),
-                              onTap: () {},
-                              child: Stack(children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.only(top: 120, left: 15),
-                                  child: Text(
-                                    "Event 2",
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white),
-                                  ),
-                                )
-                              ])),
-                        ))),
-              ),
-              Container(
-                child: Ink(
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            width: 1.0,
-                            color: Colors.grey.shade700,
-                            style: BorderStyle.solid),
-                        borderRadius: BorderRadius.circular(20),
-                        image: DecorationImage(
-                            image: NetworkImage(
-                                'https://images.pexels.com/photos/3617496/pexels-photo-3617496.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500'),
-                            fit: BoxFit.cover)),
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
-                          child: InkWell(
-                              borderRadius: BorderRadius.circular(22),
-                              onTap: () {},
-                              child: Stack(children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.only(top: 210, left: 15),
-                                  child: Text(
-                                    "Event 3",
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white),
-                                  ),
-                                )
-                              ])),
-                        ))),
-              ),
-              Container(
-                child: Ink(
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            width: 1.0,
-                            color: Colors.grey.shade700,
-                            style: BorderStyle.solid),
-                        borderRadius: BorderRadius.circular(20),
-                        image: DecorationImage(
-                            image: NetworkImage(
-                                'https://images.pexels.com/photos/3736816/pexels-photo-3736816.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500'),
-                            fit: BoxFit.cover)),
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
-                          child: InkWell(
-                              borderRadius: BorderRadius.circular(22),
-                              onTap: () {},
-                              child: Stack(children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.only(top: 210, left: 15),
-                                  child: Text(
-                                    "Event 4",
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white),
-                                  ),
-                                )
-                              ])),
-                        ))),
-              ),
-              Container(
-                child: Ink(
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            width: 1.0,
-                            color: Colors.grey.shade700,
-                            style: BorderStyle.solid),
-                        borderRadius: BorderRadius.circular(20),
-                        image: DecorationImage(
-                            image: NetworkImage(
-                                'https://images.pexels.com/photos/2792157/pexels-photo-2792157.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'),
-                            fit: BoxFit.cover)),
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
-                          child: InkWell(
-                              borderRadius: BorderRadius.circular(22),
-                              onTap: () {},
-                              child: Stack(children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.only(top: 120, left: 15),
-                                  child: Text(
-                                    "Event 5",
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white),
-                                  ),
-                                )
-                              ])),
-                        ))),
-              ),
-            ],
-          ),
-        ));
+            padding: EdgeInsets.only(top: 0.0),
+            child: StreamBuilder<QuerySnapshot>(
+              stream: Firestore.instance.collection('events').snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (!snapshot.hasData)
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                return StaggeredGridView.count(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 10.0,
+                  crossAxisSpacing: 10.0,
+                  padding: EdgeInsets.fromLTRB(15, 18, 15, 5),
+                  children: snapshot.data.documents
+                      .map((doc) => buildItem(doc))
+                      .toList(),
+                  staggeredTiles:
+                      generateRandomTiles(snapshot.data.documents.length),
+                );
+              },
+         )
+      )
+    );
   }
 }
 
 class SecondScreen extends StatelessWidget {
   final seconfTabColor = Color(0xFF1d1d1d);
   @override
+  Firestore firestore;
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: seconfTabColor,
-      body: Center(
-        child: Text('Tab 2 Layout'),
-      ),
-    );
+    return Scaffold();
   }
+}
+
+generateRandomTiles(int count) {
+  Random rnd = new Random();
+  List<StaggeredTile> _staggeredTiles = [];
+  for (int i = 0; i < count; i++) {
+    num mainAxisCellCount = 0;
+    double temp = rnd.nextDouble();
+
+    if (temp > 0.6) {
+      mainAxisCellCount = temp + 0.5;
+    } else if (temp < 0.3) {
+      mainAxisCellCount = temp + 0.9;
+    } else {
+      mainAxisCellCount = temp + 0.7;
+    }
+    _staggeredTiles
+        .add(new StaggeredTile.count(1, mainAxisCellCount));
+  }
+  return _staggeredTiles;
+}
+
+Card buildItem(DocumentSnapshot doc) {
+  return Card(
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+    color: Colors.white,
+    child: InkWell(
+          borderRadius: BorderRadius.circular(20),
+          onTap: () {},
+          child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(
+            width: 1.0,
+            color: Colors.grey.shade700,
+            style: BorderStyle.solid
+          ),
+          borderRadius: BorderRadius.circular(20),
+          image: DecorationImage(fit: BoxFit.cover,
+            image: NetworkImage("https://images.pexels.com/photos/3667816/pexels-photo-3667816.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"))
+        ),
+        child:ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
+                child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Text(
+                      '${doc.data['name']}',
+                      style: TextStyle(fontSize: 15, color: Colors.white),
+                    ),
+                  ),
+                  
+                ],
+            ),
+              ),
+        ),
+        
+      ),
+    ),
+  );
+}
+
+Container buildStuff(DocumentSnapshot doc) {
+  return Container(
+    child: Ink(
+        decoration: BoxDecoration(
+            border: Border.all(
+                width: 1.0,
+                color: Colors.grey.shade700,
+                style: BorderStyle.solid),
+            borderRadius: BorderRadius.circular(20),
+            image: DecorationImage(
+                image: NetworkImage(
+                    'https://images.pexels.com/photos/3667816/pexels-photo-3667816.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500'),
+                fit: BoxFit.cover)),
+        child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
+              child: InkWell(
+                  borderRadius: BorderRadius.circular(20),
+                  onTap: () {},
+                  child: Stack(children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 120, left: 15),
+                      child: Text(
+                        "${doc.data['name']}",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    )
+                  ])),
+            ))),
+  );
 }
