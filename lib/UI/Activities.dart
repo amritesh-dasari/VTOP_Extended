@@ -83,18 +83,74 @@ class FirstScreen extends StatelessWidget {
                       generateRandomTiles(snapshot.data.documents.length),
                 );
               },
-         )
-      )
-    );
+            )));
   }
 }
 
 class SecondScreen extends StatelessWidget {
   final seconfTabColor = Color(0xFF1d1d1d);
+  final List Clubs = [
+    "Android Club",
+    "Open Source Community",
+    "Developer Student's Club",
+    "Null Chapter"
+  ];
+  final List clubtype = ["Technical", "Technical", "Technical", "Technical"];
   @override
   Firestore firestore;
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ListView.builder(
+            itemCount: Clubs.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Card(
+                elevation: 5,
+                color: Colors.white, //Color(0xFF2c2c2c),
+                child: ListTile(
+                  leading: CircleAvatar(
+                    child: Container(
+                      child: Text("VIT"),
+                    ),
+                  ),
+                  title: Text(
+                    Clubs[index],
+                    style: TextStyle(color: Colors.black //Colors.white
+                        ),
+                  ),
+                  subtitle: Text(clubtype[index]),
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => ClubDetails()));
+                  },
+                  //onTap: () =>
+                  //debugPrint("Club Name: ${Clubs.elementAt(index)}"),
+                ),
+              );
+            }),
+      ),
+    );
+  }
+}
+
+class ClubDetails extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("CLUBS"),
+        backgroundColor: Color(0xFF2c2c2c),
+      ),
+      body: Center(
+        child: Container(
+          child: RaisedButton(
+            child: Text("Go Back"),
+            onPressed: () {},
+          ),
+        ),
+      ),
+    );
   }
 }
 
@@ -112,8 +168,7 @@ generateRandomTiles(int count) {
     } else {
       mainAxisCellCount = temp + 0.7;
     }
-    _staggeredTiles
-        .add(new StaggeredTile.count(1, mainAxisCellCount));
+    _staggeredTiles.add(new StaggeredTile.count(1, mainAxisCellCount));
   }
   return _staggeredTiles;
 }
@@ -123,40 +178,38 @@ Card buildItem(DocumentSnapshot doc) {
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
     color: Colors.white,
     child: InkWell(
-          borderRadius: BorderRadius.circular(20),
-          onTap: () {},
-          child: Container(
+      borderRadius: BorderRadius.circular(20),
+      onTap: () {},
+      child: Container(
         decoration: BoxDecoration(
-          border: Border.all(
-            width: 1.0,
-            color: Colors.grey.shade700,
-            style: BorderStyle.solid
-          ),
+            border: Border.all(
+                width: 1.0,
+                color: Colors.grey.shade700,
+                style: BorderStyle.solid),
+            borderRadius: BorderRadius.circular(20),
+            image: DecorationImage(
+                fit: BoxFit.cover,
+                image: NetworkImage(
+                    "https://images.pexels.com/photos/3667816/pexels-photo-3667816.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"))),
+        child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
-          image: DecorationImage(fit: BoxFit.cover,
-            image: NetworkImage("https://images.pexels.com/photos/3667816/pexels-photo-3667816.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"))
-        ),
-        child:ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
-                child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Text(
-                      '${doc.data['name']}',
-                      style: TextStyle(fontSize: 15, color: Colors.white),
-                    ),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Text(
+                    '${doc.data['name']}',
+                    style: TextStyle(fontSize: 15, color: Colors.white),
                   ),
-                  
-                ],
+                ),
+              ],
             ),
-              ),
+          ),
         ),
-        
       ),
     ),
   );
