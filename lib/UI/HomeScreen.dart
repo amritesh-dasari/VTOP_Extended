@@ -185,19 +185,20 @@ class _ExtendedHomeState extends State<ExtendedHome> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   FirebaseUser user;
   FirebaseAuth auth;
+
   @override
-  void initState() {
+  void initState(){
     super.initState();
     auth = FirebaseAuth.instance;
     getCurrentUser();
     _checkEmailVerification();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    timer.cancel();
-  }
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  //   timer.cancel();
+  // }
 
   getCurrentUser() async {
     user = await auth.currentUser();
